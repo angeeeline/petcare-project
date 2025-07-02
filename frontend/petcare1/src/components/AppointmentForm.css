@@ -1,0 +1,56 @@
+.tall-select .MuiSelect-select {
+  min-height: 100px !important;
+  min-width: 3x; /* typo: should be fixed */
+  display: flex;
+  align-items: center;
+}
+
+.appointment-wrapper {
+
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  z-index: 1300;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.appointment-container {
+  width: 90%;
+  max-width: 900px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.appointment-header {
+  background-color: #7B4A37;
+  color: white;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.appointment-body {
+  padding: 24px;
+}
+
+.input-label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.appointment-footer {
+  margin-top: 32px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}

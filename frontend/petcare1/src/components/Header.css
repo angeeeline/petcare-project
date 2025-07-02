@@ -1,0 +1,65 @@
+.header {
+  background-color: #fff8e1;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 1rem 2rem;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+  padding: 0;
+}
+
+.brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #7b4a37;
+}
+
+.brand-bold {
+  font-weight: 700;
+  color: #ff9800;
+}
+
+.brand-light {
+  font-weight: 300;
+  color: #6d4c41;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-right input {
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.profile-icon {
+  width: 35px;
+  height: 35px;
+  background-color: #ffe082;
+  border-radius: 50%;
+}
+
+/* If you're styling with classes */
+.notification-dropdown {
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 0.5rem;
+  z-index: 10;
+}
+
+
+

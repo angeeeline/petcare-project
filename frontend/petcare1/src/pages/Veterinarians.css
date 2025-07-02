@@ -1,0 +1,79 @@
+.vet-page {
+  padding: 2rem;
+  background-color: #fff;
+  text-align: center;
+}
+
+.vet-page h1 {
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.vet-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.vet-card {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  width: 300px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.vet-card:hover {
+  transform: translateY(-4px);
+}
+
+.vet-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.vet-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.specialty {
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.tags {
+  margin-bottom: 0.8rem;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  border-radius: 8px;
+  margin: 0 0.2rem;
+  color: white;
+  font-weight: 500;
+}
+
+.tag.blue {
+  background-color: #8e9ded;
+}
+
+.tag.yellow {
+  background-color: #ffdb56;
+  color: #333;
+}
+
+.clinic, .location {
+  font-size: 0.9rem;
+  color: #333;
+  margin: 0.
+}
