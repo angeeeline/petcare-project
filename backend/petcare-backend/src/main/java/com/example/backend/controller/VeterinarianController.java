@@ -23,10 +23,6 @@ public class VeterinarianController {
     @Autowired
     private VeterinarianService veterinarianService;
 
-    @GetMapping
-    public List<Veterinarian> getAll() {
-        return veterinarianService.getAllVeterinarians();
-    }
 
     @GetMapping("/email/{email}")
     public Optional<Veterinarian> getByEmail(@PathVariable String email) {
@@ -46,6 +42,11 @@ public class VeterinarianController {
     @GetMapping("/exists/phone/{phone}")
     public boolean phoneExists(@PathVariable String phone) {
         return veterinarianService.phoneExists(phone);
+    }
+
+    @GetMapping
+    public List<Veterinarian> getAllVeterinarians() {
+        return veterinarianService.getAllVeterinarians();
     }
 
     @PostMapping("/login")

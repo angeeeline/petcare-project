@@ -98,7 +98,7 @@ private String phoneNumber;
     return appointments;
 }
 
-public void setAppointments(List<Appointment> appointments) {
+    public void setAppointments(List<Appointment> appointments) {
     this.appointments = appointments;
 }
 }

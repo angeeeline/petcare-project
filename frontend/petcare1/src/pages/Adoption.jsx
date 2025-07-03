@@ -1,35 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { getAdoptions } from "../api/adoption";
 import "./Adoption.css";
+import Header from "../components/Header";
+import { getAdoptions } from "../api/adoption";
 
 const Adoption = () => {
-  const [adoptions, setAdoptions] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [pets, setPets] = useState([]);
 
   useEffect(() => {
-    getAdoptions().then(data => {
-      setAdoptions(data);
-      setLoading(false);
-    });
+    getAdoptions()
+      .then((data) => setPets(data))
+      .catch((error) => console.error("Failed to load pets", error));
   }, []);
 
-  if (loading) return <div>Loading adoption list...</div>;
-
   return (
-    <div className="adoption-list">
-      <h2>Adoptable Pets</h2>
-      <ul>
-        {adoptions.map(pet => (
-          <li key={pet.id}>
-            <h3>{pet.name}</h3>
-            <p>Breed: {pet.breed}</p>
-            <p>Age: {pet.age}</p>
-            <p>Description: {pet.description}</p>
-          </li>
-        ))}
-      </ul>
+    <div>
+      <Header />
+      <div className="adoption-container">
+        <h1 className="adoption-title">Find Your New Best Friend</h1>
+        <div className="adoption-grid">
+          {pets.map((pet) => (
+            <div key={pet.id} className="adoption-card">
+              <img src={pet.imageUrl} alt={pet.name} className="adoption-image" />
+              <div className="adoption-info">
+                <h3>{pet.name}</h3>
+                <p>{pet.breed} • {pet.age} years old</p>
+                <p>{pet.description}</p>
+                <button className="adopt-button">Adopt</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Adoption; 
+export default Adoption;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -11,36 +11,51 @@ import {
   Paper,
 } from '@mui/material';
 import './AppointmentForm.css';
-import { createPet } from "../api/pet";
-
-const PetRegisterForm = ({ onClose, onSuccess, petOwnerId }) => {
+import { createPet } from '../api/pet'; 
+const PetRegisterForm = ({ onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
-    petName: '',
+    petname: '',
     type: '',
     weight: '',
     breed: '',
-    status: 'Pending',
     notes: '',
-    ownerId: null
+    ownerId: null,
   });
 
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
-  //const [isAuthenticated, setIsAuthenticated] = useState(true); // default true to avoid flicker
+  useEffect(() => {
+    const user = localStorage.getItem('petOwner');
+    if (!user) {
+      setIsAuthenticated(false);
+      return;
+    }
+
+    const parsedUser = JSON.parse(user);
+    setFormData((prev) => ({
+      ...prev,
+      ownerId: parsedUser.id,
+    }));
+  }, []);
 
   const handleSubmit = async () => {
     try {
+      if (!formData.ownerId) {
+        alert('Owner ID missing. Please log in again.');
+        return;
+      }
+
       await createPet({
-        petname: formData.petName,
+        petname: formData.petname,
         type: formData.type,
         weight: parseFloat(formData.weight),
         breed: formData.breed,
         notes: formData.notes,
-        status: formData.status,
-        petOwnerId: petOwnerId, // ✅ Make sure this is passed from Profile
+        petOwner: { id: formData.ownerId },
       });
 
-      alert('Pet submitted successfully!');
-      onSuccess?.(); // ✅ Tell parent to refresh pets
+      alert('Pet registered successfully!');
+      onSuccess?.();
     } catch (err) {
       console.error(err);
       alert('Failed to register pet.');
@@ -48,28 +63,42 @@ const PetRegisterForm = ({ onClose, onSuccess, petOwnerId }) => {
   };
 
   return (
-    <Box className="appointment-wrapper">
-      <Paper elevation={4} className="appointment-container">
-        <Box className="appointment-header">
-          <Typography variant="h6">Register Pet</Typography>
-          <Button sx={{ color: 'white' }} onClick={onClose}>
-            Close ✕
+    <Paper elevation={4} className="appointment-container">
+      <Box className="appointment-header">
+        <Typography variant="h6">
+          {isAuthenticated ? 'Register Pet' : 'Access Denied'}
+        </Typography>
+        <Button sx={{ color: 'white' }} onClick={onClose}>
+          Close ✕
+        </Button>
+      </Box>
+
+      {!isAuthenticated ? (
+        <Box className="appointment-body" sx={{ textAlign: 'center', padding: '2rem' }}>
+          <Typography variant="body1" sx={{ mb: 2 }}>
+            You need to <strong>Sign Up or Log In</strong> to register a pet.
+          </Typography>
+          <Button variant="contained" onClick={() => {
+            onClose();
+            window.location.href = '/signup';
+          }}>
+            Go to Sign Up
           </Button>
         </Box>
-
+      ) : (
         <Box className="appointment-body">
           <Grid container spacing={4}>
             <Grid item xs={12} md={6}>
               <InputLabel className="input-label">Pet Name</InputLabel>
               <TextField
                 fullWidth
-                value={formData.petName}
-                onChange={(e) => setFormData({ ...formData, petName: e.target.value })}
-                placeholder="Buddy"
+                value={formData.petname}
+                onChange={(e) => setFormData({ ...formData, petname: e.target.value })}
+                placeholder="e.g. Buddy"
               />
 
               <Box mt={3}>
-                <InputLabel className="input-label">Type of Animal</InputLabel>
+                <InputLabel className="input-label">Type</InputLabel>
                 <Select
                   fullWidth
                   value={formData.type}
@@ -83,12 +112,13 @@ const PetRegisterForm = ({ onClose, onSuccess, petOwnerId }) => {
               </Box>
 
               <Box mt={3}>
-                <InputLabel className="input-label">Weight</InputLabel>
+                <InputLabel className="input-label">Weight (kg)</InputLabel>
                 <TextField
                   fullWidth
+                  type="number"
                   value={formData.weight}
                   onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
-                  placeholder="10 pounds"
+                  placeholder="10"
                 />
               </Box>
             </Grid>
@@ -99,19 +129,10 @@ const PetRegisterForm = ({ onClose, onSuccess, petOwnerId }) => {
                 fullWidth
                 value={formData.breed}
                 onChange={(e) => setFormData({ ...formData, breed: e.target.value })}
+                placeholder="e.g. Labrador"
               />
 
-              <Box mt={3}>
-                <InputLabel className="input-label">Notes</InputLabel>
-                <TextField
-                  fullWidth
-                  multiline
-                  rows={3}
-                  value={formData.notes}
-                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  placeholder="Any special instructions?"
-                />
-              </Box>
+              
             </Grid>
           </Grid>
 
@@ -120,8 +141,8 @@ const PetRegisterForm = ({ onClose, onSuccess, petOwnerId }) => {
             <Button variant="contained" color="success" onClick={handleSubmit}>Confirm</Button>
           </Box>
         </Box>
-      </Paper>
-    </Box>
+      )}
+    </Paper>
   );
 };
 

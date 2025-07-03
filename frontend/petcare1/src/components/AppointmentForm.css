@@ -1,15 +1,24 @@
 .tall-select .MuiSelect-select {
   min-height: 100px !important;
-  min-width: 3x; /* typo: should be fixed */
+  min-width: 300x; /* typo: should be fixed */
   display: flex;
   align-items: center;
+}
+
+.MuiTextField-root,
+.MuiSelect-root,
+.MuiInputBase-root {
+  width: 100%;
+  box-sizing: border-box;
+  
+
 }
 
 .appointment-wrapper {
 
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  align-items:s center;
   justify-content: center;
   padding-top: 4rem;
   padding-bottom: 4rem;
@@ -20,9 +29,15 @@
   width: 100%;
 }
 
+.tall-select .MuiSelect-select {
+  min-height: 56px; /* Standard Material-UI input height */
+  display: flex;
+  align-items: center;
+}
+
 .appointment-container {
-  width: 90%;
-  max-width: 900px;
+  width: 60%;
+  max-width: 560px;;
   border-radius: 12px;
   overflow: hidden;
   background-color: white;
@@ -53,4 +68,19 @@
   display: flex;
   justify-content: flex-end;
   gap: 12px;
+}
+
+/* Optional: make each grid item take 50% width */
+.appointment-body .MuiGrid-item {
+  width: 50%;
+  padding-right: 12px;
+  box-sizing: border-box;
+}
+
+/* Stack fields nicely on smaller screens */
+@media (max-width: 768px) {
+  .appointment-body .MuiGrid-item {
+    width: 100%;
+    padding-right: 0;
+  }
 }

@@ -23,11 +23,18 @@ export const getAppointmentsByOwnerId = (ownerId) => {
 };
 
 // UPDATE: Update an existing appointment by ID
-export const updateAppointment = (id, updatedAppointment) => {
+/*export const updateAppointment = (id, updatedAppointment) => {
   return axios.put(`${API_BASE}/${id}`, updatedAppointment);
-};
+};*/
 
 // DELETE: Remove an appointment by ID
 export const deleteAppointment = (id) => {
   return axios.delete(`${API_BASE}/${id}`);
 };
+
+export const updateAppointment = async (id, data) => {
+  const res = await axios.put(`http://localhost:8080/api/appointments/${id}`, data);
+  return res.data;
+};
+
+

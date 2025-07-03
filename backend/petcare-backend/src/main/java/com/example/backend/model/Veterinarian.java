@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "veterinarians")
+@Table(name = "Veterinarians")
 public class Veterinarian {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,7 @@ public class Veterinarian {
     private String email;
     private String phoneNumber;
     private String specialization;
-    private int experience; // in years
+    private int experience; 
     private String password;
 
     // Getters and setters

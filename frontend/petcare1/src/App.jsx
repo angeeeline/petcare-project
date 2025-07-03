@@ -20,6 +20,10 @@ import Shop from './pages/Shop';
 import AppointmentList from './pages/AppointmentList';
 import Veterinarian from './pages/Veterinarians';
 import VetDashboard from './pages/VeterinarianDashboard';
+import TreatmentList from './pages/TreatmentList';
+
+import VetProfile from './pages/VetProfile';
+
 
 import Header from './components/Header';
 import AppointmentForm from './components/AppointmentForm';
@@ -279,6 +283,11 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/veterinarians" element={<Veterinarian />} />
         <Route path="/vet-dashboard" element={<VetDashboard />} />
+        <Route path="/treatments" element={<TreatmentList />} />
+        <Route path="/vet-profile" element={<VetProfile />} />
+        
+       
+      
 
 
         <Route

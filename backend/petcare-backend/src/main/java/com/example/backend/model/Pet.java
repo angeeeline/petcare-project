@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,7 +18,13 @@ public class Pet {
     private String petname;
     private String type;
     private double weight;
-    private String breed;
+    private String breed; 
+    
+    @ManyToOne
+    @JoinColumn(name = "owner_id") // Foreign key column
+    private PetOwner petOwner;
+
+
 
     public Pet(Long petId, String petname, String type, double weight, String breed) {
         this.petId = petId;
@@ -24,6 +32,14 @@ public class Pet {
         this.type = type;
         this.weight = weight;
         this.breed = breed;
+    }
+
+     public PetOwner getPetOwner() {
+        return petOwner;
+    }
+
+    public void setPetOwner(PetOwner petOwner) {
+        this.petOwner = petOwner;
     }
 
     public void setPetId(Long petId) {
@@ -68,6 +84,7 @@ public class Pet {
     }
 
     public Pet(){}
+    
 
     
 

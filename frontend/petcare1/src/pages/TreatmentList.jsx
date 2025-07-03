@@ -29,6 +29,8 @@ const TreatmentList = () => (
       </tbody>
     </table>
   </div>
+
+  
 );
 
 export default TreatmentList; 

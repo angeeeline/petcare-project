@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import axios from 'axios';
 import PetRegisterForm from '../components/PetRegisterForm';
+import EditAppointmentForm from '../components/EditAppointmentForm';
+import EditPet from '../components/EditPet';
+
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -19,8 +22,11 @@ const Profile = () => {
     address: '',
   });
 
-  const [pets, setPets] = useState([]); // ✅ Now empty, fetched from backend
+  const [pets, setPets] = useState([]);
   const [history, setHistory] = useState([]);
+  const [editingAppointment, setEditingAppointment] = useState(null);
+  const [editingPet, setEditingPet] = useState(null);
+
 
   const storedUser = JSON.parse(localStorage.getItem('petOwner'));
   const email = storedUser?.email;
@@ -44,11 +50,9 @@ const Profile = () => {
         });
         setPetOwnerId(data.id);
 
-        // ✅ Fetch appointments
         axios.get(`http://localhost:8080/api/appointments/owner/${data.id}`)
           .then((res) => setHistory(res.data));
 
-        // ✅ Fetch pets
         axios.get(`http://localhost:8080/api/pets/owner/${data.id}`)
           .then((res) => setPets(res.data))
           .catch(() => console.error('Could not load pets.'));
@@ -71,16 +75,14 @@ const Profile = () => {
       .catch(() => alert('Failed to update profile'));
   };
 
-  const handleUpdate = (id, oldData) => {
-    const newDate = prompt('Enter new date (YYYY-MM-DD):', oldData.date);
-    if (newDate) {
-      axios.put(`http://localhost:8080/api/appointments/${id}`, { ...oldData, date: newDate })
-        .then(() => {
-          alert('Appointment updated');
-          axios.get(`http://localhost:8080/api/appointments/owner/${petOwnerId}`)
-            .then((res) => setHistory(res.data));
-        });
-    }
+  const handleUpdate = (id, data) => {
+    setEditingAppointment(data);
+  };
+
+  const handleEditSuccess = () => {
+    axios.get(`http://localhost:8080/api/appointments/owner/${petOwnerId}`)
+      .then((res) => setHistory(res.data));
+    setEditingAppointment(null);
   };
 
   const handleDelete = (id) => {
@@ -92,6 +94,19 @@ const Profile = () => {
         });
     }
   };
+
+  const handleDeletePet = (petId) => {
+  if (window.confirm('Are you sure you want to delete this pet?')) {
+    axios.delete(`http://localhost:8080/api/pets/${petId}`)
+      .then(() => {
+        alert('Pet deleted!');
+        setPets(prev => prev.filter(p => p.petId !== petId)); // ✅ correct key
+      })
+      .catch(() => alert('Failed to delete pet.'));
+  }
+};
+
+
 
   return (
     <>
@@ -145,21 +160,28 @@ const Profile = () => {
               disabled={!isEditing}
               margin="normal"
             />
-
+            
             <div className="pets-box">
-              <h4>My Pets</h4>
+              <h4>My Pets</h4> 
               {pets.length === 0 ? (
                 <p>No pets registered.</p>
               ) : (
-                pets.map(pet => (
-                  <div key={pet.id} className="pet-card">
-                    <h3>{pet.name}</h3>
-                    <p>Breed: {pet.breed}</p>
-                    <p>Age: {pet.age}</p>
-                    {/* Add more pet details as needed */}
-                  </div>
-                ))
-              )}
+                pets.map((pet) => (
+  <div key={pet.id} className="pet-card">
+    <h3>{pet.petname}</h3>
+    <p>Breed: {pet.breed}</p>
+    <p>Weight: {pet.weight}</p>
+    <Button size="small" onClick={() => setEditingPet(pet)}>📝</Button>
+    <Button
+      size="small"
+      color="error"
+      onClick={() => handleDeletePet(pet.petId)}
+    >
+      🗑️
+    </Button>
+  </div>
+)))}
+
 
               <Button onClick={() => setPetRegisterOpen(true)} className="add-pet-btn" variant="outlined">+ Add/Register Your Pet</Button>
             </div>
@@ -184,43 +206,86 @@ const Profile = () => {
               disabled={true}
               margin="normal"
             />
+            <div className="container">
+</div>
 
             <div className="history-box">
-              <h4>Appointment History</h4>
-              {history.length === 0 ? (
-                <p>No appointments found.</p>
-              ) : (
-                history.map((log, i) => (
-                  <div key={i} className="history-entry">
-                    <div><strong>{log.petName}</strong> - {log.serviceType}</div>
-                    <div>{log.date} at {log.time}</div>
-                    <div>Status: {log.status}</div>
-                    <Button size="small" onClick={() => handleUpdate(log.id, log)} variant="outlined">
-                      Edit
-                    </Button>
-                    <Button size="small" color="error" onClick={() => handleDelete(log.id)} variant="outlined">
-                      Cancel
-                    </Button>
-                  </div>
-                ))
-              )}
-            </div>
+  <h4>Appointment History</h4>
+  {history.length === 0 ? (
+    <p>No appointments found.</p>
+  ) : (
+    <>
+      {history.slice(0, 4).map((log, i) => (
+        <div key={i} className="history-entry">
+          <div><strong>{log.petname}</strong> - {log.serviceType}</div>
+          <div>{log.date} at {log.time}</div>
+          <div>Status: {log.status}</div>
+          <Button size="small" onClick={() => handleUpdate(log.id, log)}>
+            📝
+          </Button>
+          <Button size="small" color="error" onClick={() => handleDelete(log.id)}>
+            🗑️
+          </Button>
+        </div>
+      ))}
+
+      {history.length >= 4 && (
+        <Button
+          size="small"
+          variant="text"
+          onClick={() => window.location.href = '/appointments'} // Replace with your actual route
+          style={{ marginTop: '10px' }}
+        >
+          See More →
+        </Button>
+      )}
+    </>
+  )}
+</div>
           </div>
         </div>
       </div>
 
-      {/* Pet Modal */}
       <Modal open={registerOpen} onClose={() => setPetRegisterOpen(false)}>
+  <Box className="appointment-wrapper">
+    <PetRegisterForm
+      petOwnerId={petOwnerId}
+      onClose={() => setPetRegisterOpen(false)}
+      onSuccess={() => {
+        setPetRegisterOpen(false);
+        axios.get(`http://localhost:8080/api/pets/owner/${petOwnerId}`)
+          .then((res) => setPets(res.data))
+          .catch(() => console.error('Could not refresh pets list.'));
+      }}
+    />
+  </Box>
+</Modal>
+
+
+
+
+      <Modal open={!!editingPet} onClose={() => setEditingPet(null)}>
+  <Box className="appointment-wrapper">
+    <EditPet
+      pet={editingPet}
+      onClose={() => setEditingPet(null)}
+      onSuccess={() => {
+        setEditingPet(null);
+        axios.get(`http://localhost:8080/api/pets/owner/${petOwnerId}`)
+          .then((res) => setPets(res.data));
+      }}
+    />
+  </Box>
+</Modal>
+
+
+
+      <Modal open={!!editingAppointment} onClose={() => setEditingAppointment(null)}>
         <Box className="appointment-wrapper">
-          <PetRegisterForm
-            petOwnerId={petOwnerId}
-            onClose={() => setPetRegisterOpen(false)}
-            onSuccess={() => {
-              setPetRegisterOpen(false);
-              axios.get(`http://localhost:8080/api/pets/owner/${petOwnerId}`)
-                .then((res) => setPets(res.data))
-                .catch(() => console.error('Could not refresh pets list.'));
-            }}
+          <EditAppointmentForm
+            appointment={editingAppointment}
+            onClose={() => setEditingAppointment(null)}
+            onSuccess={handleEditSuccess}
           />
         </Box>
       </Modal>

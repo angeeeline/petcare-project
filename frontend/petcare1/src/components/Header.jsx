@@ -43,15 +43,26 @@ const Header = () => {
   ];
 
   useEffect(() => {
-    const checkUser = () => {
-      const user = localStorage.getItem('user');
-      setIsLoggedIn(!!user);
-    };
+  const checkUser = () => {
+    const petOwner = localStorage.getItem('petOwner');
+    const veterinarian = localStorage.getItem('veterinarian');
+    setIsLoggedIn(!!(petOwner || veterinarian));
+  };
 
-    checkUser();
-    window.addEventListener('storageChange', checkUser);
-    return () => window.removeEventListener('storageChange', checkUser);
-  }, []);
+  checkUser();
+
+  const handleStorageChange = () => checkUser();
+
+  // Custom and native storage events
+  window.addEventListener('storageChange', handleStorageChange);
+  window.addEventListener('storage', handleStorageChange);
+
+  return () => {
+    window.removeEventListener('storageChange', handleStorageChange);
+    window.removeEventListener('storage', handleStorageChange);
+  };
+}, []);
+
 
   const handleNotifClick = (e) => {
     setNotifAnchor(e.currentTarget);
@@ -63,15 +74,18 @@ const Header = () => {
   const handleExploreClose = () => setExploreAnchor(null);
 
   const handleProfileClick = (event) => {
-    setProfileAnchor(profileAnchor ? null : event.currentTarget);
-  };
+  
+  setProfileAnchor(profileAnchor ? null : event.currentTarget);
+};
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('petOwner');
-    window.dispatchEvent(new Event('storageChange'));
-    navigate('/');
-  };
+  localStorage.removeItem('user');
+  localStorage.removeItem('petOwner');
+  localStorage.removeItem('veterinarian');
+  window.dispatchEvent(new Event('storageChange')); // Triggers update
+  navigate('/');
+};
+
 
   const goTo = (path) => {
     handleExploreClose();
