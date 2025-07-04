@@ -18,10 +18,6 @@ public class VeterinarianService {
     public List<Veterinarian> getAllVeterinarians() {
         return veterinarianRepository.findAll();
     }
- 
-    public Optional<Veterinarian> getById(Long id) {
-    return veterinarianRepository.findById(id);
-}
 
     public Optional<Veterinarian> getByEmail(String email) {
         return veterinarianRepository.findByEmail(email);
@@ -44,6 +40,10 @@ public class VeterinarianService {
         return vet.isPresent() && vet.get().getPassword().equals(password);
     }
 
+   
+
+
+    
     
 
 }

@@ -11,57 +11,56 @@ import {
   Button
 } from '@mui/material';
 import axios from 'axios';
- 
+
 const VetAppointmentList = () => {
   const [appointments, setAppointments] = useState([]);
   const [editingId, setEditingId] = useState(null);
- 
-  const vet = JSON.parse(localStorage.getItem('veterinarian')); // assume this is how you store vet info
- 
+
+  const vet = JSON.parse(localStorage.getItem('veterinarian'));
+
   useEffect(() => {
-    if (vet && vet.id) {
-      axios.get(`/api/appointments/vet/${vet.id}`)
+    if (vet?.id) {
+      axios
+        .get(`http://localhost:8080/api/appointments/veterinarian/${vet.id}`)
         .then(res => setAppointments(res.data))
         .catch(err => console.error('Failed to fetch appointments', err));
     }
   }, [vet]);
- 
+
   const handleChange = (id, field, value) => {
     setAppointments(prev =>
-      prev.map(app =>
-        app.id === id ? { ...app, [field]: value } : app
-      )
+      prev.map(app => (app.id === id ? { ...app, [field]: value } : app))
     );
   };
- 
+
   const handleSave = async (id) => {
     const updated = appointments.find(a => a.id === id);
     try {
-      await axios.put(`/api/appointments/${id}`, updated);
+      await axios.put(`http://localhost:8080/api/appointments/${id}`, updated);
       alert('Appointment updated');
       setEditingId(null);
     } catch (err) {
       alert('Failed to update appointment');
     }
   };
- 
+
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to cancel this appointment?')) return;
     try {
-      await axios.delete(`/api/appointments/${id}`);
+      await axios.delete(`http://localhost:8080/api/appointments/${id}`);
       setAppointments(appointments.filter(a => a.id !== id));
       alert('Appointment canceled');
     } catch (err) {
       alert('Failed to cancel appointment');
     }
   };
- 
+
   return (
     <Paper elevation={3} sx={{ padding: '2rem', marginTop: '2rem' }}>
       <Typography variant="h6" gutterBottom>
         Your Appointments
       </Typography>
- 
+
       {appointments.length === 0 ? (
         <Typography>No appointments yet.</Typography>
       ) : (
@@ -80,11 +79,11 @@ const VetAppointmentList = () => {
                 <InputLabel>Pet Name</InputLabel>
                 <TextField
                   fullWidth
-                  value={appt.petName}
-                  disabled={editingId !== appt.id}
-                  onChange={(e) => handleChange(appt.id, 'petName', e.target.value)}
+                  value={appt.pet?.petname || appt.petName || ''}
+                  disabled
                 />
               </Grid>
+
               <Grid item xs={6} sm={3}>
                 <InputLabel>Date</InputLabel>
                 <TextField
@@ -95,6 +94,7 @@ const VetAppointmentList = () => {
                   onChange={(e) => handleChange(appt.id, 'date', e.target.value)}
                 />
               </Grid>
+
               <Grid item xs={6} sm={3}>
                 <InputLabel>Time</InputLabel>
                 <Select
@@ -109,6 +109,7 @@ const VetAppointmentList = () => {
                   <MenuItem value="16:00">4PM - 6PM</MenuItem>
                 </Select>
               </Grid>
+
               <Grid item xs={12} sm={4}>
                 <InputLabel>Service Type</InputLabel>
                 <Select
@@ -122,6 +123,7 @@ const VetAppointmentList = () => {
                   <MenuItem value="Check-up">Check-up</MenuItem>
                 </Select>
               </Grid>
+
               <Grid item xs={12} sm={8}>
                 <InputLabel>Notes</InputLabel>
                 <TextField
@@ -134,17 +136,25 @@ const VetAppointmentList = () => {
                 />
               </Grid>
             </Grid>
- 
+
             <Box sx={{ textAlign: 'right', mt: 2 }}>
               {editingId === appt.id ? (
                 <>
-                  <Button onClick={() => setEditingId(null)} sx={{ mr: 1 }}>Cancel</Button>
-                  <Button variant="contained" color="success" onClick={() => handleSave(appt.id)}>Save</Button>
+                  <Button onClick={() => setEditingId(null)} sx={{ mr: 1 }}>
+                    Cancel
+                  </Button>
+                  <Button variant="contained" color="success" onClick={() => handleSave(appt.id)}>
+                    Save
+                  </Button>
                 </>
               ) : (
                 <>
-                  <Button onClick={() => handleDelete(appt.id)} color="error" sx={{ mr: 1 }}>Cancel</Button>
-                  <Button variant="outlined" onClick={() => setEditingId(appt.id)}>Edit</Button>
+                  <Button onClick={() => handleDelete(appt.id)} color="error" sx={{ mr: 1 }}>
+                    Cancel
+                  </Button>
+                  <Button variant="outlined" onClick={() => setEditingId(appt.id)}>
+                    Edit
+                  </Button>
                 </>
               )}
             </Box>
@@ -154,5 +164,5 @@ const VetAppointmentList = () => {
     </Paper>
   );
 };
- 
+
 export default VetAppointmentList;

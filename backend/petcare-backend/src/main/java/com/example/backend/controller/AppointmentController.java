@@ -38,12 +38,19 @@ public class AppointmentController {
         return ResponseEntity.ok(service.getAll());
     }
 
+    
     @GetMapping("/{id}")
     public ResponseEntity<Appointment> getById(@PathVariable Long id) {
         return service.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/veterinarian/{vetId}")
+    public ResponseEntity<List<Appointment>> getAppointmentsByVeterinarian(@PathVariable Long vetId) {
+        return ResponseEntity.ok(service.getAppointmentsByVeterinarian(vetId));
+}
+
 
     @GetMapping("/owner/{ownerId}")
     public ResponseEntity<List<Appointment>> getAppointmentsByOwner(@PathVariable Long ownerId) {

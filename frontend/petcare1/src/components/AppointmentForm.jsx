@@ -1,32 +1,27 @@
 // src/components/AppointmentForm.jsx
 import React, { useState, useEffect } from 'react';
 import {
-  Box,
-  Button,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-  Paper
+  Box, Button, Grid, InputLabel, MenuItem,
+  Select, TextField, Typography, Paper
 } from '@mui/material';
-import { createAppointment } from '../api/appointment';
+import axios from 'axios';
 import './AppointmentForm.css';
-import { Link } from 'react-router-dom';
 
 const AppointmentForm = ({ onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
-    petName: '',
+    petId: '',
+    veterinarianId: '',
     date: '',
     time: '',
     serviceType: '',
     status: 'Pending',
     notes: '',
-    ownerId: null // ✅ Add ownerId
+    ownerId: null
   });
 
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // default true to avoid flicker
+  const [pets, setPets] = useState([]);
+  const [veterinarians, setVeterinarians] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   useEffect(() => {
     const user = localStorage.getItem('petOwner');
@@ -36,47 +31,43 @@ const AppointmentForm = ({ onClose, onSuccess }) => {
     }
 
     const parsedUser = JSON.parse(user);
-    setFormData((prev) => ({
-      ...prev,
-      ownerId: parsedUser.id, // ✅ set ownerId from localStorage
-    }));
+    const ownerId = parsedUser.id;
+    setFormData(prev => ({ ...prev, ownerId }));
+
+    axios.get(`http://localhost:8080/api/pets/owner/${ownerId}`)
+      .then(res => setPets(res.data))
+      .catch(() => console.error('Failed to load pets'));
+
+    axios.get(`http://localhost:8080/api/veterinarians`)
+      .then(res => setVeterinarians(res.data))
+      .catch(() => console.error('Failed to load vets'));
   }, []);
 
   const handleSubmit = async () => {
-  try {
-    if (!formData.ownerId) {
-      alert('Owner ID missing. Please log in again.');
-      return;
+    try {
+      const payload = {
+        ...formData,
+        owner: { id: formData.ownerId },
+        pet: { petId: formData.petId },
+        veterinarian: { id: formData.veterinarianId }
+      };
+
+      await axios.post('http://localhost:8080/api/appointments', payload);
+      alert('Appointment booked successfully!');
+      if (onSuccess) onSuccess();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to book appointment.');
     }
+  };
 
-    await createAppointment({
-      ...formData,
-      owner: { id: formData.ownerId } // ✅ Wrap ownerId into an object
-    });
-
-    alert('Appointment created successfully!');
-    if (onSuccess) onSuccess();
-  } catch (err) {
-    console.error(err);
-    alert('Failed to submit appointment.');
-  }
-};
-
-  return (
-    <Paper elevation={4} className="appointment-container">
-      <Box className="appointment-header">
-        <Typography variant="h6">
-          {isAuthenticated ? 'Add Appointment' : 'Access Denied'}
-        </Typography>
-        <Button sx={{ color: 'white' }} onClick={onClose}>
-          Close ✕
-        </Button>
-      </Box>
-
-      {!isAuthenticated ? (
+  if (!isAuthenticated) {
+    return (
+      <Paper elevation={4} className="appointment-container">
         <Box className="appointment-body" sx={{ textAlign: 'center', padding: '2rem' }}>
+          <Typography variant="h6">Access Denied</Typography>
           <Typography variant="body1" sx={{ mb: 2 }}>
-            You need to <strong>Sign Up or Log In</strong> to book an appointment.
+            Please log in to book an appointment.
           </Typography>
           <Button variant="contained" onClick={() => {
             onClose();
@@ -85,75 +76,103 @@ const AppointmentForm = ({ onClose, onSuccess }) => {
             Go to Sign Up
           </Button>
         </Box>
-      ) : (
-        <Box className="appointment-body">
-          <Grid container spacing={4}>
-            <Grid item xs={12} md={6}>
-              <InputLabel className="input-label">Pet Name</InputLabel>
-              <TextField
-                fullWidth
-                value={formData.petName}
-                onChange={(e) => setFormData({ ...formData, petName: e.target.value })}
-                placeholder="e.g. Max"
-              />
+      </Paper>
+    );
+  }
 
-              <Box mt={3}>
-                <InputLabel className="input-label">For when</InputLabel>
-                <TextField
-                  type="date"
-                  fullWidth
-                  value={formData.date}
-                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                />
-              </Box>
+  return (
+    <Paper elevation={4} className="appointment-container">
+      <Box className="appointment-header">
+        <Typography variant="h6">Add Appointment</Typography>
+        <Button sx={{ color: 'white' }} onClick={onClose}>Close ✕</Button>
+      </Box>
 
-              <Box mt={3}>
-                <InputLabel className="input-label">Service</InputLabel>
-                <Select
-                  fullWidth
-                  value={formData.serviceType}
-                  onChange={(e) => setFormData({ ...formData, serviceType: e.target.value })}
-                >
-                  <MenuItem value="Grooming">Grooming</MenuItem>
-                  <MenuItem value="Vaccination">Vaccination</MenuItem>
-                  <MenuItem value="Check-up">Check-up</MenuItem>
-                </Select>
-              </Box>
-            </Grid>
+      <Box className="appointment-body">
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={6}>
+            <InputLabel>Pet</InputLabel>
+            <Select
+              fullWidth
+              value={formData.petId}
+              onChange={(e) => setFormData({ ...formData, petId: e.target.value })}
+            >
+              {pets.length === 0 ? (
+                <MenuItem disabled>No pets available</MenuItem>
+              ) : pets.map((pet) => (
+                <MenuItem key={pet.petId} value={pet.petId}>{pet.petname}</MenuItem>
+              ))}
+            </Select>
 
-            <Grid item xs={12} md={6}>
-              <InputLabel className="input-label">Time</InputLabel>
+            <Box mt={3}>
+              <InputLabel>Veterinarian</InputLabel>
               <Select
                 fullWidth
-                value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                value={formData.veterinarianId}
+                onChange={(e) => setFormData({ ...formData, veterinarianId: e.target.value })}
               >
-                <MenuItem value="10:00">10AM - 12PM</MenuItem>
-                <MenuItem value="13:00">1PM - 2PM</MenuItem>
-                <MenuItem value="14:00">2PM - 4PM</MenuItem>
-                <MenuItem value="16:00">4PM - 6PM</MenuItem>
+                {veterinarians.length === 0 ? (
+                  <MenuItem disabled>No vets available</MenuItem>
+                ) : veterinarians.map((vet) => (
+                  <MenuItem key={vet.id} value={vet.id}>Dr. {vet.firstname} {vet.lastname}</MenuItem>
+                ))}
               </Select>
+            </Box>
 
-              <Box mt={3}>
-                <InputLabel className="input-label">Notes</InputLabel>
-                <TextField
-                  fullWidth
-                  multiline
-                  rows={3}
-                  value={formData.notes}
-                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  placeholder="Any special instructions?"
-                />
-              </Box>
-            </Grid>
+            <Box mt={3}>
+              <InputLabel>For when</InputLabel>
+              <TextField
+                type="date"
+                fullWidth
+                value={formData.date}
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              />
+            </Box>
+
+            <Box mt={3}>
+              <InputLabel>Service</InputLabel>
+              <Select
+                fullWidth
+                value={formData.serviceType}
+                onChange={(e) => setFormData({ ...formData, serviceType: e.target.value })}
+              >
+                <MenuItem value="Grooming">Grooming</MenuItem>
+                <MenuItem value="Vaccination">Vaccination</MenuItem>
+                <MenuItem value="Check-up">Check-up</MenuItem>
+              </Select>
+            </Box>
           </Grid>
 
-          <Box className="appointment-footer">
-            <Button variant="outlined" color="inherit" onClick={onClose}>Cancel</Button>
-            <Button variant="contained" color="success" onClick={handleSubmit}>Confirm</Button>
-          </Box>
+          <Grid item xs={12} md={6}>
+            <InputLabel>Time</InputLabel>
+            <Select
+              fullWidth
+              value={formData.time}
+              onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+            >
+              <MenuItem value="10:00">10AM - 12PM</MenuItem>
+              <MenuItem value="13:00">1PM - 2PM</MenuItem>
+              <MenuItem value="14:00">2PM - 4PM</MenuItem>
+              <MenuItem value="16:00">4PM - 6PM</MenuItem>
+            </Select>
+
+            <Box mt={3}>
+              <InputLabel>Notes</InputLabel>
+              <TextField
+                fullWidth
+                multiline
+                rows={3}
+                value={formData.notes}
+                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+              />
+            </Box>
+          </Grid>
+        </Grid>
+
+        <Box className="appointment-footer">
+          <Button variant="outlined" onClick={onClose}>Cancel</Button>
+          <Button variant="contained" color="success" onClick={handleSubmit}>Confirm</Button>
         </Box>
-      )}
+      </Box>
     </Paper>
   );
 };
