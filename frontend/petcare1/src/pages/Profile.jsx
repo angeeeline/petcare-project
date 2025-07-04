@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './Profile.css';
-import { TextField, Button, MenuItem, Modal, Box } from '@mui/material';
+import { TextField, Button, Modal, Box, Container } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import axios from 'axios';
 import PetRegisterForm from '../components/PetRegisterForm';
 import EditAppointmentForm from '../components/EditAppointmentForm';
 import EditPet from '../components/EditPet';
-
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -26,7 +25,6 @@ const Profile = () => {
   const [history, setHistory] = useState([]);
   const [editingAppointment, setEditingAppointment] = useState(null);
   const [editingPet, setEditingPet] = useState(null);
-
 
   const storedUser = JSON.parse(localStorage.getItem('petOwner'));
   const email = storedUser?.email;
@@ -50,15 +48,18 @@ const Profile = () => {
         });
         setPetOwnerId(data.id);
 
+        // Fetch appointments
         axios.get(`http://localhost:8080/api/appointments/owner/${data.id}`)
-          .then((res) => setHistory(res.data));
+          .then((res) => setHistory(res.data))
+          .catch(() => console.error('Could not load appointments.'));
 
+        // Fetch pets
         axios.get(`http://localhost:8080/api/pets/owner/${data.id}`)
           .then((res) => setPets(res.data))
           .catch(() => console.error('Could not load pets.'));
       })
       .catch(() => {
-        alert('PetOwner not found or appointments could not be loaded!');
+        alert('PetOwner not found!');
       });
   }, []);
 
@@ -96,17 +97,15 @@ const Profile = () => {
   };
 
   const handleDeletePet = (petId) => {
-  if (window.confirm('Are you sure you want to delete this pet?')) {
-    axios.delete(`http://localhost:8080/api/pets/${petId}`)
-      .then(() => {
-        alert('Pet deleted!');
-        setPets(prev => prev.filter(p => p.petId !== petId)); // ✅ correct key
-      })
-      .catch(() => alert('Failed to delete pet.'));
-  }
-};
-
-
+    if (window.confirm('Are you sure you want to delete this pet?')) {
+      axios.delete(`http://localhost:8080/api/pets/${petId}`)
+        .then(() => {
+          alert('Pet deleted!');
+          setPets(prev => prev.filter(p => p.petId !== petId));
+        })
+        .catch(() => alert('Failed to delete pet.'));
+    }
+  };
 
   return (
     <>
@@ -160,30 +159,34 @@ const Profile = () => {
               disabled={!isEditing}
               margin="normal"
             />
-            
+
             <div className="pets-box">
-              <h4>My Pets</h4> 
+              <h4>My Pets</h4>
               {pets.length === 0 ? (
                 <p>No pets registered.</p>
               ) : (
                 pets.map((pet) => (
-  <div key={pet.id} className="pet-card">
-    <h3>{pet.petname}</h3>
-    <p>Breed: {pet.breed}</p>
-    <p>Weight: {pet.weight}</p>
-    <Button size="small" onClick={() => setEditingPet(pet)}>📝</Button>
-    <Button
-      size="small"
-      color="error"
-      onClick={() => handleDeletePet(pet.petId)}
-    >
-      🗑️
-    </Button>
-  </div>
-)))}
+                  <div key={pet.petId} className="history-entry">
+                    <div><strong>{pet.petname}</strong></div>
+                    <div>Breed: {pet.breed}</div>
+                    <div>Weight: {pet.weight}</div>
+                    <div className="pet-buttons">
+                      <Button size="small" onClick={() => setEditingPet(pet)}>📝</Button>
+                      <Button
+                        size="small"
+                        color="error"
+                        onClick={() => handleDeletePet(pet.petId)}
+                      >
+                        🗑️
+                      </Button>
+                    </div>
+                  </div>
+                ))
+              )}
 
-
-              <Button onClick={() => setPetRegisterOpen(true)} className="add-pet-btn" variant="outlined">+ Add/Register Your Pet</Button>
+              <Button onClick={() => setPetRegisterOpen(true)} className="add-pet-btn" variant="outlined">
+                + Add/Register Your Pet
+              </Button>
             </div>
           </div>
 
@@ -202,84 +205,77 @@ const Profile = () => {
               label="Email"
               name="email"
               value={profile.email}
-              onChange={handleChange}
-              disabled={true}
+              disabled
               margin="normal"
             />
-            <div className="container">
+<div className="container">
 </div>
 
             <div className="history-box">
-  <h4>Appointment History</h4>
-  {history.length === 0 ? (
-    <p>No appointments found.</p>
-  ) : (
-    <>
-      {history.slice(0, 4).map((log, i) => (
-        <div key={i} className="history-entry">
-          <div><strong>{log.petname}</strong> - {log.serviceType}</div>
-          <div>{log.date} at {log.time}</div>
-          <div>Status: {log.status}</div>
-          <Button size="small" onClick={() => handleUpdate(log.id, log)}>
-            📝
-          </Button>
-          <Button size="small" color="error" onClick={() => handleDelete(log.id)}>
-            🗑️
-          </Button>
-        </div>
-      ))}
-
-      {history.length >= 4 && (
-        <Button
-          size="small"
-          variant="text"
-          onClick={() => window.location.href = '/appointments'} // Replace with your actual route
-          style={{ marginTop: '10px' }}
-        >
-          See More →
-        </Button>
-      )}
-    </>
-  )}
-</div>
+              <h4>Appointment History</h4>
+              {history.length === 0 ? (
+                <p>No appointments found.</p>
+              ) : (
+                <>
+                  {history.slice(0, 4).map((log, i) => (
+                    <div key={i} className="history-entry">
+                      <div><strong>{log.pet?.petname }</strong> - {log.serviceType}</div>
+                      <div>Vet: Dr. {log.veterinarian?.firstname} {log.veterinarian?.lastname}</div>
+                      <div>{log.date} at {log.time}</div>
+                      <div>Status: {log.status}</div>
+                      <Button size="small" onClick={() => handleUpdate(log.id, log)}>📝</Button>
+                      <Button size="small" color="error" onClick={() => handleDelete(log.id)}>🗑️</Button>
+                    </div>
+                  ))}
+                  {history.length >= 4 && (
+                    <Button
+                      size="small"
+                      variant="text"
+                      onClick={() => window.location.href = '/appointments'}
+                      style={{ marginTop: '10px' }}
+                    >
+                      See More →
+                    </Button>
+                  )}
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
+      {/* Register Pet Modal */}
       <Modal open={registerOpen} onClose={() => setPetRegisterOpen(false)}>
-  <Box className="appointment-wrapper">
-    <PetRegisterForm
-      petOwnerId={petOwnerId}
-      onClose={() => setPetRegisterOpen(false)}
-      onSuccess={() => {
-        setPetRegisterOpen(false);
-        axios.get(`http://localhost:8080/api/pets/owner/${petOwnerId}`)
-          .then((res) => setPets(res.data))
-          .catch(() => console.error('Could not refresh pets list.'));
-      }}
-    />
-  </Box>
-</Modal>
+        <Box className="appointment-wrapper">
+          <PetRegisterForm
+            petOwnerId={petOwnerId}
+            onClose={() => setPetRegisterOpen(false)}
+            onSuccess={() => {
+              setPetRegisterOpen(false);
+              axios.get(`http://localhost:8080/api/pets/owner/${petOwnerId}`)
+                .then((res) => setPets(res.data))
+                .catch(() => console.error('Could not refresh pets list.'));
+            }}
+          />
+        </Box>
+      </Modal>
 
-
-
-
+      {/* Edit Pet Modal */}
       <Modal open={!!editingPet} onClose={() => setEditingPet(null)}>
-  <Box className="appointment-wrapper">
-    <EditPet
-      pet={editingPet}
-      onClose={() => setEditingPet(null)}
-      onSuccess={() => {
-        setEditingPet(null);
-        axios.get(`http://localhost:8080/api/pets/owner/${petOwnerId}`)
-          .then((res) => setPets(res.data));
-      }}
-    />
-  </Box>
-</Modal>
+        <Box className="appointment-wrapper">
+          <EditPet
+            pet={editingPet}
+            onClose={() => setEditingPet(null)}
+            onSuccess={() => {
+              setEditingPet(null);
+              axios.get(`http://localhost:8080/api/pets/owner/${petOwnerId}`)
+                .then((res) => setPets(res.data));
+            }}
+          />
+        </Box>
+      </Modal>
 
-
-
+      {/* Edit Appointment Modal */}
       <Modal open={!!editingAppointment} onClose={() => setEditingAppointment(null)}>
         <Box className="appointment-wrapper">
           <EditAppointmentForm

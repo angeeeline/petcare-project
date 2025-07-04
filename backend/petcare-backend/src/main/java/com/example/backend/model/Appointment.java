@@ -33,15 +33,24 @@ public class Appointment {
     private String status;
     private String notes;
 
-    public PetOwner getOwner() {
-    return owner;
-    }   
 
-    public void setOwner(PetOwner owner) {
-    this.owner = owner;
-    }
+    @ManyToOne
+    @JoinColumn(name = "pet_id")
+    private Pet pet;
 
+    @ManyToOne
+    @JoinColumn(name = "veterinarian_id")
+    private Veterinarian veterinarian;
     
+    
+     public PetOwner getOwner() { return owner; }
+    public void setOwner(PetOwner owner) { this.owner = owner; }
+
+    public Pet getPet() { return pet; }
+    public void setPet(Pet pet) { this.pet = pet; }
+
+    public Veterinarian getVeterinarian() { return veterinarian; }
+    public void setVeterinarian(Veterinarian veterinarian) { this.veterinarian = veterinarian; }
     
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
