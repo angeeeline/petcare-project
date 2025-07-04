@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import './Shop.css';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import {
   Button,
   Grid,
@@ -140,28 +141,7 @@ const Shop = () => {
         </Slider>
       </Container>
 
-      {/* Footer */}
-      <footer className="footer">
-        <div className="footer-brand">
-          <img src={logo} width={250} height={60} alt="Logo"/>
-          <p>by FazCo</p>
-        </div>
-        <div className="footer-info">
-          <p>Nuable St. Bonafide, Kal City, 4000 Cebu</p>
-          <p>📞 1234-456-7890 | 📱 123-456-7890</p>
-          <div className="social-icons">🌐 📘 🐦 📸</div>
-        </div>
-        <div className="footer-links">
-          <a href="#">ABOUT US</a>
-          <a href="#">CONTACT US</a>
-          <a href="#">HELP</a>
-          <a href="#">PRIVACY POLICY</a>
-          <a href="#">FAQS</a>
-        </div>
-        <p className="copyright">
-          Copyright © 2025 Fetch & Fur
-        </p>
-      </footer>
+      <Footer />
     </div>
   );
 };

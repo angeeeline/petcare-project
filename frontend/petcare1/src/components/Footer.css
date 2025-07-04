@@ -37,14 +37,14 @@
 }
 
 .footer-links a {
+  color: #ffdb0e ;
   text-decoration: none;
-  color: #fff;
   font-weight: 500;
 }
 
 .footer-links a:hover {
   text-decoration: underline;
-  color: #ffe0b2;
+  color: #fff;
 }
 
 .footer p {
@@ -63,3 +63,4 @@
     font-size: 14px;
   }
 }
+
