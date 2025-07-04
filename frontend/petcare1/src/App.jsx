@@ -12,6 +12,9 @@ import {
   CircularProgress,
   Modal
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
+
+
 
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
@@ -30,7 +33,29 @@ import AppointmentForm from './components/AppointmentForm';
 import PrivateRoute from './components/PrivateRoute';
 import Footer from './components/Footer';
 
-import logo from '/src/assets/fetch_and_fur_logo1.png';
+const CustomButton = styled(Button)(({ theme, variant }) => ({
+  padding: '0.75rem 2rem',
+  fontSize: '1rem',
+  fontWeight: 'bold',
+  borderRadius: '8px',
+  ...(variant === 'contained' && {
+    backgroundColor: '#FF6F00',
+    color: '#fff',
+    '&:hover': {
+      backgroundColor: '#e65c00',
+    },
+  }),
+  ...(variant === 'outlined' && {
+    backgroundColor: 'transparent',
+    border: '2px solid #FF6F00',
+    color: '#FF6F00',
+    '&:hover': {
+      backgroundColor: '#fff3e0',
+      borderColor: '#e65c00',
+      color: '#e65c00',
+    },
+  }),
+}));
 
 
 
@@ -51,10 +76,10 @@ function Home({ setAppointmentOpen }) {
           <p style={{ fontSize: '1.2rem', margin: '1rem auto', maxWidth: '600px' }}>
             With vet-backed products, guidance, and rewards—we’re here to support your pet’s health in every way we can.
           </p>
-          <Button variant="contained" onClick={() => setAppointmentOpen(true)} sx={{ mr: 2 }}>
+          <CustomButton variant="contained" onClick={() => setAppointmentOpen(true)} sx={{ mr: 2 }}>
             Book an Appointment
-          </Button>
-          <Button variant="outlined" onClick={() => navigate('/shop')}>Shop now</Button>
+          </CustomButton>
+          <CustomButton variant="outlined" onClick={() => navigate('/shop')}>Shop now</CustomButton>
         </section>
 
         {/* FEATURES + LIBRELA */}
@@ -87,13 +112,13 @@ function Home({ setAppointmentOpen }) {
               bottom: '20px',
               left: '200px',
               color: 'black',
-              padding: '1rem',
+              padding: '20px',
               borderRadius: '10px'
             }}>
               <h3>Meet the Protectors</h3>
               <p>Get to know your furry babies' Veterinarians!</p>
               
-               <Button variant="contained" onClick={() => navigate('/veterinarians')}>Veterinarian</Button>
+               <CustomButton variant="contained" sx={{padding: '10px', margin: '1rem'}} onClick={() => navigate('/veterinarians')}>Veterinarian</CustomButton>
             </div>
           </div>
 
@@ -199,9 +224,9 @@ function Home({ setAppointmentOpen }) {
           <p style={{ fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto 2rem', color: '#5C4033' }}>
             Join our growing network of compassionate veterinarians and make a difference every day.
           </p>
-          <Button
+          <CustomButton
             variant="contained"
-            sx={{
+sx={{
               backgroundColor: '#FF6F00',
               padding: '0.75rem 2rem',
               fontSize: '1rem',
@@ -209,11 +234,10 @@ function Home({ setAppointmentOpen }) {
               color: '#fff',
               borderRadius: '8px',
               '&:hover': { backgroundColor: '#e65c00' }
-            }}
-            onClick={() => navigate('/signup')}
+            }}            onClick={() => navigate('/signup')}
           >
             Register as Vet
-          </Button>
+          </CustomButton>
         </section>
 
         {/* RECOMMENDED */}
@@ -249,10 +273,10 @@ function Home({ setAppointmentOpen }) {
           </div>
           
         </section>
-        <Footer />
+        
         
       </div>
-
+          <Footer />
       <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
         <CircularProgress color="inherit" />
       </Backdrop>
