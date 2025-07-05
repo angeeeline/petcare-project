@@ -13,7 +13,7 @@ body, html {
   align-items: center;
 }
 
-.login-left {
+.login-container .login-left {
   background-color: rgba(255, 255, 255, 0.95);
   padding: 50px;
   border-radius: 16px;
@@ -23,28 +23,15 @@ body, html {
   flex-direction: column;
   gap: 12px;
   transform: translateX(-40px); 
-}
-
-.brand {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-.brand strong {
-  color: #f9b233;
-}
-
-.brand .light {
-  font-weight: 300;
-  color: #444;
+  margin-left: -1000px;
 }
 
 h1 {
-  margin: 0 0 20px 0;
+  margin: 0 0 15px 0;
 }
 
-.forgot-password {
-  color: #007bff;
+.login-container .forgot-password {
+  color: #FF6F00;
   font-size: 14px;
   text-align: right;
   cursor: pointer;
@@ -80,8 +67,8 @@ h1 {
   text-align: center;
 }
 
-.bottom-text .link {
-  color: #007bff;
+.login-container .bottom-text .link {
+  color: #FF6F00;
   cursor: pointer;
   text-decoration: underline;
 }

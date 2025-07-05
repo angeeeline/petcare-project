@@ -1,33 +1,7 @@
 import React, { useState } from 'react';
 
 const Appointment = () => {
-    const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-
-  const handleOpen = () => {
-    setOpen(true);
-    setTimeout(() => {
-      setOpen(false);
-    }, 2000);
-  };
-
-  const goToAppointment = () => {
-    navigate('/appointment');
-  };
-
-  const goToLogin = () => {
-    navigate('/login');
-  };
-
-  const goToShop = () => {
-    navigate('/shop'); 
-
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+    
     return(<div className="app">
       
       <Header />

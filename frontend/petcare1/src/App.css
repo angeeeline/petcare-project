@@ -149,7 +149,19 @@ background: url('/Pictures/1.png') no-repeat center/cover;  border-radius: 10px;
   margin-bottom: 10px;
 }
  
+.button-css {
+  background-color: #FF6F00;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
 
+.button-css:hover {
+  background-color: #e65c00;
+}
 
 /*adjust margin sa whole website*/
 .container {

@@ -1,6 +1,7 @@
 // components/Footer.jsx
 import React from 'react';
 import logo from '/src/assets/fetch_and_fur_logo1.png';
+import "./Footer.css";
 
 const Footer = () => {
   return (
@@ -18,7 +19,7 @@ const Footer = () => {
       <p>Nuable St. Bonafide, Kal City, 4000 Cebu</p>
       <p>📞 1234-456-7890 | 📱 123-456-7890</p>
       <div>🌐 📘 🐦 📸</div>
-      <div style={{ marginTop: '1rem' }}>
+      <div style={{ marginTop: '1rem' }} className="footer-links" >
         <a href="#">ABOUT US</a> | <a href="#">CONTACT US</a> |{' '}
         <a href="#">HELP</a> | <a href="#">PRIVACY POLICY</a> |{' '}
         <a href="#">FAQS</a>
