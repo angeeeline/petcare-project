@@ -19,7 +19,7 @@ const VeterinarianDashboard = () => {
 
       // Fetch appointments assigned to this veterinarian
       axios
-        .get(`http://localhost:8080/api/appointments/veterinarian/${parsedVet.id}`)
+        .get('http://localhost:8080/api/veterinarians')
         .then((res) => setAppointments(res.data))
         .catch((err) => console.error('Failed to fetch vet appointments:', err));
     } else {
@@ -78,7 +78,7 @@ const VeterinarianDashboard = () => {
           ) : (
             appointments.map((appt) => (
               <Paper key={appt.id} elevation={3} className="appointment-card">
-                <Typography><strong>Pet:</strong> {appt.pet?.petname || 'Unknown'}</Typography>
+                <Typography><strong>Pet:</strong> {appt.pet?.petname}</Typography>
                 <Typography><strong>Owner:</strong> {appt.owner?.firstname} {appt.owner?.lastname}</Typography>
                 <Typography><strong>Date:</strong> {appt.date} at {appt.time}</Typography>
                 <Typography><strong>Service:</strong> {appt.serviceType}</Typography>

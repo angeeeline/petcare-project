@@ -164,6 +164,7 @@ background: url('/Pictures/1.png') no-repeat center/cover;  border-radius: 10px;
 
 .hover-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
 }
 .hover-card:hover {
   transform: translateY(-8px);

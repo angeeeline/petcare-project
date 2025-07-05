@@ -119,7 +119,7 @@ const AppointmentForm = ({ onClose, onSuccess }) => {
             </Box>
 
             <Box mt={3}>
-              <InputLabel>For when</InputLabel>
+              <InputLabel>Time</InputLabel>
               <TextField
                 type="date"
                 fullWidth

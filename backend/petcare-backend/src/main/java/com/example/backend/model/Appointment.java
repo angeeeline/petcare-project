@@ -42,6 +42,8 @@ public class Appointment {
     @JoinColumn(name = "veterinarian_id")
     private Veterinarian veterinarian;
     
+
+    
     
      public PetOwner getOwner() { return owner; }
     public void setOwner(PetOwner owner) { this.owner = owner; }
