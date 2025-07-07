@@ -5,31 +5,59 @@ import {
   Button,
   Typography,
   Paper,
-  Box
+  Box,
+  Modal
 } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import axios from 'axios';
 import logo from '/src/assets/fetch_and_fur_logo1.png';
+import EditAppointmentForm from '../components/EditAppointmentForm';
 
 const VeterinarianDashboard = () => {
   const navigate = useNavigate();
   const [vetData, setVetData] = useState(null);
   const [appointments, setAppointments] = useState([]);
+  const [editingAppointment, setEditingAppointment] = useState(null);
 
   useEffect(() => {
     const storedVet = localStorage.getItem('veterinarian');
     if (storedVet) {
       const parsedVet = JSON.parse(storedVet);
       setVetData(parsedVet);
-
-      axios
-        .get(`http://localhost:8080/api/appointments/veterinarian/${parsedVet.id}`)
-        .then((res) => setAppointments(res.data))
-        .catch((err) => console.error('Failed to fetch vet appointments:', err));
+      fetchAppointments(parsedVet.id);
     } else {
       navigate('/login');
     }
   }, []);
+
+  const fetchAppointments = (vetId) => {
+    axios
+      .get(`http://localhost:8080/api/appointments/veterinarian/${vetId}`)
+      .then((res) => setAppointments(res.data))
+      .catch((err) => console.error('Failed to fetch vet appointments:', err));
+  };
+
+  const handleDeleteAppointment = async (id) => {
+    if (window.confirm("Are you sure you want to cancel this appointment?")) {
+      try {
+        await axios.delete(`http://localhost:8080/api/appointments/${id}`);
+        setAppointments(prev => prev.filter(appt => appt.id !== id));
+      } catch (err) {
+        console.error(err);
+        alert('Failed to delete appointment.');
+      }
+    }
+  };
+
+  const updateStatus = async (id, newStatus) => {
+    try {
+      await axios.put(`http://localhost:8080/api/appointments/${id}/status`, { status: newStatus });
+      fetchAppointments(vetData.id);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to update status.');
+    }
+  };
 
   const timeSlots = [
     '10:00', '12:00', '13:00', '15:00', '16:00', '17:00', '19:00'
@@ -128,6 +156,40 @@ const VeterinarianDashboard = () => {
                         <Typography variant="caption" className="appointment-status">
                           Status: {appt.status}
                         </Typography>
+
+                        <Box mt={1} display="flex" gap={1} flexWrap="wrap">
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            onClick={() => setEditingAppointment(appt)}
+                          >
+                            ✏️ Edit
+                          </Button>
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            color="error"
+                            onClick={() => handleDeleteAppointment(appt.id)}
+                          >
+                            🗑️ Delete
+                          </Button>
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            color="success"
+                            onClick={() => updateStatus(appt.id, 'Confirmed')}
+                          >
+                            ✅ Confirm
+                          </Button>
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => updateStatus(appt.id, 'Finished')}
+                          >
+                            ✔️ Finished
+                          </Button>
+                        </Box>
                       </Paper>
                     ))
                   )}
@@ -137,6 +199,20 @@ const VeterinarianDashboard = () => {
           </div>
         </div>
       </main>
+
+      {/* Edit Modal */}
+      <Modal open={!!editingAppointment} onClose={() => setEditingAppointment(null)}>
+        <Box className="appointment-wrapper">
+          <EditAppointmentForm
+            appointment={editingAppointment}
+            onClose={() => setEditingAppointment(null)}
+            onSuccess={() => {
+              fetchAppointments(vetData.id);
+              setEditingAppointment(null);
+            }}
+          />
+        </Box>
+      </Modal>
     </div>
   );
 };

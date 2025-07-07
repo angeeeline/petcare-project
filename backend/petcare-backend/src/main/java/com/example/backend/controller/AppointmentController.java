@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.model.Appointment;
 import com.example.backend.service.AppointmentService;
+
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -63,6 +65,14 @@ public class AppointmentController {
         Appointment updated = service.update(id, appointment);
         return ResponseEntity.ok(updated);
     }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Appointment> updateStatus(@PathVariable Long id, @RequestBody Map<String, String> payload) {
+        String status = payload.get("status");
+        Appointment appt = service.updateAppointmentStatus(id, status); // fixed
+        return ResponseEntity.ok(appt);
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {

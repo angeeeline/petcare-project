@@ -48,7 +48,7 @@
   padding: 20px;
   margin-top: 20px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  height: 300px;         /* Fixed height */
+  height: 550px;         /* Fixed height */
   width: 100%;           /* Full width of parent — or use e.g. 400px if you want fixed width */
   max-width: 500px;      /* Optional: limit the max width */
         /* Enable vertical scroll if needed */
@@ -127,4 +127,23 @@
   display: flex;
   gap: 8px;
   margin-top: 5px;
+}
+.see-more-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.see-more-btn {
+  
+  font-weight: 500;
+  text-transform: none;
+  padding: 6px 16px;
+  transition: all 0.2s ease-in-out;
+}
+
+.see-more-btn:hover {
+  
+  
+  
 }

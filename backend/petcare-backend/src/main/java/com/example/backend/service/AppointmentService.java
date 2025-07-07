@@ -62,6 +62,13 @@ public class AppointmentService {
         return repository.save(appointment);
     }
 
+    public Appointment updateAppointmentStatus(Long id, String status) {
+    Appointment appt = repository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Appointment not found"));
+    appt.setStatus(status);
+    return repository.save(appt);
+}
+
     public List<Appointment> getAll() {
         return repository.findAll();
     }
@@ -78,10 +85,21 @@ public class AppointmentService {
         return repository.findByVeterinarianId(vetId);
     }
 
-    public Appointment update(Long id, Appointment appointment) {
-        appointment.setId(id);
-        return repository.save(appointment);
-    }
+    public Appointment update(Long id, Appointment updated) {
+    Appointment existing = repository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Appointment not found"));
+
+    // Only allow specific fields to be updated
+    existing.setDate(updated.getDate());
+    existing.setTime(updated.getTime());
+    existing.setServiceType(updated.getServiceType());
+    existing.setNotes(updated.getNotes());
+    existing.setStatus(updated.getStatus());
+
+    // DO NOT update pet, owner, or vet associations here
+    return repository.save(existing);
+}
+
 
     public void delete(Long id) {
         repository.deleteById(id);
