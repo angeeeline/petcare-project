@@ -20,10 +20,9 @@ const VetAppointmentList = () => {
 
   useEffect(() => {
     if (vet?.id) {
-      axios
-        .get(`http://localhost:8080/api/appointments/veterinarian/${vet.id}`)
-        .then(res => setAppointments(res.data))
-        .catch(err => console.error('Failed to fetch appointments', err));
+      axios.get(`http://localhost:8080/api/appointments/veterinarian/${vet.id}`)
+        axios.then(res => setAppointments(res.data))
+        axios.catch(err => console.error('Failed to fetch appointments', err));
     }
   }, [vet]);
 

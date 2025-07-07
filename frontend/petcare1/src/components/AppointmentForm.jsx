@@ -138,6 +138,9 @@ const AppointmentForm = ({ onClose, onSuccess }) => {
                 <MenuItem value="Grooming">Grooming</MenuItem>
                 <MenuItem value="Vaccination">Vaccination</MenuItem>
                 <MenuItem value="Check-up">Check-up</MenuItem>
+                <MenuItem value="Check-up">Pet Training</MenuItem>
+                
+                
               </Select>
             </Box>
           </Grid>

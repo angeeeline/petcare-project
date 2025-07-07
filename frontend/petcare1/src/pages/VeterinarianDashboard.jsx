@@ -17,9 +17,10 @@ const VeterinarianDashboard = () => {
       const parsedVet = JSON.parse(storedVet);
       setVetData(parsedVet);
 
+      //axios.get(`http://localhost:8080/api/appointments/owner/${data.id}`)
       // Fetch appointments assigned to this veterinarian
       axios
-        .get('http://localhost:8080/api/veterinarians')
+        .get(`http://localhost:8080/api/appointments/veterinarian/${parsedVet.id}`)
         .then((res) => setAppointments(res.data))
         .catch((err) => console.error('Failed to fetch vet appointments:', err));
     } else {
@@ -35,10 +36,14 @@ const VeterinarianDashboard = () => {
           <img src={logo} alt="Fetch and Fur Logo" className="dashboard-logo" />
         </div>
 
-        <div className="profile-section">
-          <AccountCircleIcon style={{ fontSize: 48 }} />
-          <div className="vet-name">{vetData?.lastname || ''}</div>
-        </div>
+        <div
+  className="profile-section"
+  onClick={() => navigate('/vet-profile')}
+  style={{ cursor: 'pointer' }}
+>
+  <AccountCircleIcon style={{ fontSize: 48 }} />
+  <div className="vet-name">{vetData?.lastname || ''}</div>
+</div>
 
         <nav>
           <ul>

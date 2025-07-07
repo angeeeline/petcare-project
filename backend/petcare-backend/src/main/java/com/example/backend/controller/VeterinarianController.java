@@ -50,9 +50,16 @@ public class VeterinarianController {
     }
 
     @PostMapping("/login")
-    public boolean login(@RequestBody Veterinarian loginData) {
-        return veterinarianService.verifyCredentials(loginData.getEmail(), loginData.getPassword());
-    }
+    public Optional<Veterinarian> login(@RequestBody Veterinarian loginData) {
+        Optional<Veterinarian> vet = veterinarianService.getByEmail(loginData.getEmail());
+
+        if (vet.isPresent() && vet.get().getPassword().equals(loginData.getPassword())) {
+            return vet;
+        }
+
+        return Optional.empty(); 
+}
+
 
     
 }
