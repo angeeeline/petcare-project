@@ -5,7 +5,30 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import axios from 'axios';
 import logo from '/src/assets/fetch_and_fur_logo1.png';
+import { styled } from '@mui/material/styles';
 
+const CustomButton = styled(Button)(({ variant }) => ({
+  padding: '0.75rem 2rem',
+  fontSize: '1rem',
+  fontWeight: 'bold',
+  ...(variant === 'contained' && {
+    backgroundColor: '#FF6F00',
+    color: '#fff',
+    '&:hover': {
+      backgroundColor: '#e65c00',
+    },
+  }),
+  ...(variant === 'outlined' && {
+    backgroundColor: 'transparent',
+    border: '2px solid #FF6F00',
+    color: '#FF6F00',
+    '&:hover': {
+      backgroundColor: '#fff3e0',
+      borderColor: '#e65c00',
+      color: '#e65c00',
+    },
+  }),
+}));
 const SignUp = () => {
   const navigate = useNavigate();
 
@@ -84,7 +107,7 @@ const SignUp = () => {
         <form className="login-left"> 
           <img src={logo} width={150} height={40} alt="Logo" />
           <h1>Sign Up</h1>
-          <Tabs value={role} onChange={(e, newVal) => setRole(newVal)} sx={{ mb: 2 }}>
+          <Tabs textColor="secondary" indicatorColor="secondary" value={role} onChange={(e, newVal) => setRole(newVal)} sx={{ mb: 2 }}>
             <Tab label="Pet Owner" value="petowner" />
             <Tab label="Veterinarian" value="veterinarian" />
           </Tabs>
@@ -136,14 +159,14 @@ const SignUp = () => {
           {error && <p style={{ color: 'red' }}>{error}</p>}
                     {success && <p style={{ color: 'green' }}>{success}</p>}
 
-          <Button fullWidth variant="contained" onClick={handleSubmit}>
+          <CustomButton fullWidth variant="contained" onClick={handleSubmit}>
             Create Account
-          </Button>
+          </CustomButton>
           <div className="or">Or Continue With</div>
           <div className="social-buttons">
-            <Button variant="outlined">G</Button>
-            <Button variant="outlined">F</Button>
-            <Button variant="outlined">Y</Button>
+            <CustomButton variant="outlined">G</CustomButton>
+            <CustomButton variant="outlined">f</CustomButton>
+            <CustomButton variant="outlined">🔵</CustomButton>
           </div>
 
           <p className="bottom-text">

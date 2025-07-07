@@ -23,7 +23,7 @@ body, html {
   flex-direction: column;
   gap: 12px;
   transform: translateX(-40px); 
-  margin-left: -1000px;
+  margin-left: -45rem;
 }
 
 h1 {

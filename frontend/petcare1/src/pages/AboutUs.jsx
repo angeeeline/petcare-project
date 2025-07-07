@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
-const Appointment = () => {
+const AboutUs = () => {
     
-    return(<div className="app">
-      
+    return(
+    <div className="app">
       <Header />
+      
 
       <section className="hero">
         <div className="hero-content">
@@ -21,28 +24,6 @@ const Appointment = () => {
 
       
 
-      <footer className="footer">
-        <div className="footer-brand">
-          <h2><span className="brand-bold">Fetch</span>&<span className="brand-light">Fur</span></h2>
-          <p>by FazCo</p>
-        </div>
-        <div className="footer-info">
-          <p>Nuable St. Bonafide, Kal City, 4000 Cebu</p>
-          <p>📞 1234-456-7890 | 📱 123-456-7890</p>
-          <div className="social-icons">🌐 📘 🐦 📸</div>
-        </div>
-        <div className="footer-links">
-          <a href="#">ABOUT US</a>
-          <a href="#">CONTACT US</a>
-          <a href="#">HELP</a>
-          <a href="#">PRIVACY POLICY</a>
-          <a href="#">FAQS</a>
-        </div>
-        <p className="copyright">
-          Copyright © 2025 Fetch & Fur
-        </p>
-      </footer>
-
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
@@ -50,7 +31,9 @@ const Appointment = () => {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-    </div>)
+    <Footer />
+    </div>
+    )
 };
 
 export default AboutUs;

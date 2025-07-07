@@ -101,12 +101,8 @@ const EditPet = ({ pet, onClose, onSuccess }) => {
         </Grid>
 
         <Box className="appointment-footer">
-          <Button variant="outlined" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button variant="contained" color="success" onClick={handleSubmit}>
-            Save Changes
-          </Button>
+          <Button className="custom-button outlined" onClick={onClose}>Cancel</Button>
+          <Button className="custom-button contained" onClick={handleSubmit}>Confirm</Button>
         </Box>
       </Box>
     </Paper>

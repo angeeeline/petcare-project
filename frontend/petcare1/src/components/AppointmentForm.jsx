@@ -173,8 +173,8 @@ const AppointmentForm = ({ onClose, onSuccess }) => {
         </Grid>
 
         <Box className="appointment-footer">
-          <Button variant="outlined" onClick={onClose}>Cancel</Button>
-          <Button variant="contained" color="success" onClick={handleSubmit}>Confirm</Button>
+          <Button className="custom-button outlined" onClick={onClose}>Cancel</Button>
+                    <Button className="custom-button contained" onClick={handleSubmit}>Save Changes</Button>
         </Box>
       </Box>
     </Paper>

@@ -90,7 +90,7 @@ const Login = () => {
           
           <h1>Login</h1>
 
-          <Tabs value={role} onChange={(e, newVal) => setRole(newVal)} sx={{ mb: 2 }}>
+          <Tabs value={role} textColor="secondary" indicatorColor="secondary" onChange={(e, newVal) => setRole(newVal)} sx={{ mb: 2 }}>
             <Tab label="Pet Owner" value="petowner" />
             <Tab label="Veterinarian" value="veterinarian" />
           </Tabs>
