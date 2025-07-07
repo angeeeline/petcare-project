@@ -40,6 +40,21 @@ public class VeterinarianService {
         return vet.isPresent() && vet.get().getPassword().equals(password);
     }
 
+    public Veterinarian updateVeterinarian(Long id, Veterinarian updatedVet) {
+    Veterinarian existingVet = veterinarianRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Veterinarian not found"));
+
+    existingVet.setFirstname(updatedVet.getFirstname());
+    existingVet.setLastname(updatedVet.getLastname());
+    existingVet.setPhoneNumber(updatedVet.getPhoneNumber());
+    existingVet.setSpecialization(updatedVet.getSpecialization());
+    
+    
+
+    return veterinarianRepository.save(existingVet);
+}
+
+
    
 
 

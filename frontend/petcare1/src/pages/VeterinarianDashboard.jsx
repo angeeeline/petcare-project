@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './VeterinarianDashboard.css';
 import { useNavigate } from 'react-router-dom';
-import { Button, Typography, Paper, Box } from '@mui/material';
+import {
+  Button,
+  Typography,
+  Paper,
+  Box
+} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import axios from 'axios';
 import logo from '/src/assets/fetch_and_fur_logo1.png';
@@ -17,8 +22,6 @@ const VeterinarianDashboard = () => {
       const parsedVet = JSON.parse(storedVet);
       setVetData(parsedVet);
 
-      //axios.get(`http://localhost:8080/api/appointments/owner/${data.id}`)
-      // Fetch appointments assigned to this veterinarian
       axios
         .get(`http://localhost:8080/api/appointments/veterinarian/${parsedVet.id}`)
         .then((res) => setAppointments(res.data))
@@ -28,22 +31,32 @@ const VeterinarianDashboard = () => {
     }
   }, []);
 
+  const timeSlots = [
+    '10:00', '12:00', '13:00', '15:00', '16:00', '17:00', '19:00'
+  ];
+
+  const formatTimeLabel = (time) => {
+    const [hour, minute] = time.split(':');
+    const date = new Date();
+    date.setHours(+hour, +minute);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
   return (
     <div className="vet-dashboard">
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="logo">
-          <img src={logo} alt="Fetch and Fur Logo" className="dashboard-logo" />
+          <img src={logo} width={230} height={65} alt="Fetch and Fur Logo" className="dashboard-logo" />
         </div>
 
         <div
-  className="profile-section"
-  onClick={() => navigate('/vet-profile')}
-  style={{ cursor: 'pointer' }}
->
-  <AccountCircleIcon style={{ fontSize: 48 }} />
-  <div className="vet-name">{vetData?.lastname || ''}</div>
-</div>
+          className="profile-section"
+          onClick={() => navigate('/vet-profile')}
+        >
+          <AccountCircleIcon style={{ fontSize: 48 }} />
+          <div className="vet-name">{vetData?.lastname || ''}</div>
+        </div>
 
         <nav>
           <ul>
@@ -70,36 +83,58 @@ const VeterinarianDashboard = () => {
 
       {/* Main Content */}
       <main className="main-content">
-        <h1>Welcome, Dr. {vetData?.lastname || ''}</h1>
-        <p>This is your dashboard. View and manage your appointments below.</p>
+        {/* Welcome Section */}
+        <div className="welcome-section">
+          <h1>Welcome, Dr. {vetData?.lastname || ''}</h1>
+          <p>This is your dashboard. View and manage your appointments below.</p>
+        </div>
 
-        <Box className="appointments-section">
-          <Typography variant="h5" gutterBottom>
-            Your Appointments
+        {/* Calendar */}
+        <div className="calendar-section">
+          <Typography variant="h6" className="calendar-title">
+            Today, {new Date().toLocaleDateString('en-US', { weekday: 'long', day: '2-digit', month: 'long' })}
           </Typography>
 
-          {appointments.length === 0 ? (
-            <Typography>No appointments assigned to you yet.</Typography>
-          ) : (
-            appointments.map((appt) => (
-              <Paper key={appt.id} elevation={3} className="appointment-card">
-                <Typography><strong>Pet:</strong> {appt.pet?.petname}</Typography>
-                <Typography><strong>Owner:</strong> {appt.owner?.firstname} {appt.owner?.lastname}</Typography>
-                <Typography><strong>Date:</strong> {appt.date} at {appt.time}</Typography>
-                <Typography><strong>Service:</strong> {appt.serviceType}</Typography>
-                <Typography><strong>Status:</strong> {appt.status}</Typography>
-                {appt.notes && (
-                  <Typography><strong>Notes:</strong> {appt.notes}</Typography>
-                )}
-              </Paper>
-            ))
-          )}
-        </Box>
+          <div className="calendar-scroll">
+            {timeSlots.map((slot, i) => {
+              const slotAppointments = appointments.filter(appt =>
+                appt.time?.startsWith(slot)
+              );
 
-        <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-          <Button variant="contained" onClick={() => navigate('/')}>
-            Return Home
-          </Button>
+              return (
+                <Box key={i} className="calendar-slot">
+                  <Typography className="slot-time">
+                    {formatTimeLabel(slot)}
+                  </Typography>
+
+                  {slotAppointments.length === 0 ? (
+                    <Paper className="no-appointments" elevation={0}>
+                      No appointments
+                    </Paper>
+                  ) : (
+                    slotAppointments.map(appt => (
+                      <Paper key={appt.id} className="appointment-card" elevation={2}>
+                        <Typography className="appointment-title">
+                          {appt.pet?.petname} - {appt.serviceType}
+                        </Typography>
+                        <Typography variant="body2">
+                          Owner: {appt.owner?.firstname} {appt.owner?.lastname}
+                        </Typography>
+                        {appt.notes && (
+                          <Typography variant="body2">
+                            Notes: {appt.notes}
+                          </Typography>
+                        )}
+                        <Typography variant="caption" className="appointment-status">
+                          Status: {appt.status}
+                        </Typography>
+                      </Paper>
+                    ))
+                  )}
+                </Box>
+              );
+            })}
+          </div>
         </div>
       </main>
     </div>

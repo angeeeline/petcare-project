@@ -217,7 +217,7 @@ const Profile = () => {
                 <p>No appointments found.</p>
               ) : (
                 <>
-                  {history.slice(0, 4).map((log, i) => (
+                  {history.slice(0, 3).map((log, i) => (
                     <div key={i} className="history-entry">
                       <div><strong>{log.pet?.petname }</strong> - {log.serviceType}</div>
                       <div>Vet: Dr. {log.veterinarian?.firstname} {log.veterinarian?.lastname}</div>
@@ -231,7 +231,7 @@ const Profile = () => {
                     <Button
                       size="small"
                       variant="text"
-                      onClick={() => window.location.href = '/appointments'}
+                      onClick={() => window.location.href = '/appointments-list'}
                       style={{ marginTop: '10px' }}
                     >
                       See More →

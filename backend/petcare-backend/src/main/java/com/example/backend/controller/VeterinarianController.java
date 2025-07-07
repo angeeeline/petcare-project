@@ -49,6 +49,7 @@ public class VeterinarianController {
         return veterinarianService.getAllVeterinarians();
     }
 
+
     @PostMapping("/login")
     public Optional<Veterinarian> login(@RequestBody Veterinarian loginData) {
         Optional<Veterinarian> vet = veterinarianService.getByEmail(loginData.getEmail());
