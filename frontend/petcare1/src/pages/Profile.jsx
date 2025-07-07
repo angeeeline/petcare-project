@@ -217,7 +217,7 @@ const Profile = () => {
                 <p>No appointments found.</p>
               ) : (
                 <>
-                  {history.slice(0, 4).map((log, i) => (
+                  {history.slice(0, 6).map((log, i) => (
                     <div key={i} className="history-entry">
                       <div><strong>{log.pet?.petname }</strong> - {log.serviceType}</div>
                       <div>Vet: Dr. {log.veterinarian?.firstname} {log.veterinarian?.lastname}</div>
@@ -227,15 +227,18 @@ const Profile = () => {
                       <Button size="small" color="error" onClick={() => handleDelete(log.id)}>🗑️</Button>
                     </div>
                   ))}
-                  {history.length >= 4 && (
-                    <Button
-                      size="small"
-                      variant="text"
-                      onClick={() => window.location.href = '/appointments'}
-                      style={{ marginTop: '10px' }}
-                    >
-                      See More →
-                    </Button>
+                  {history.length >= 6 && (
+  <div className="see-more-wrapper">
+    <Button
+      variant="outlined"
+      color="primary"
+      size="small"
+      className="see-more-btn"
+      onClick={() => window.location.href = '/appointments-list'}
+    >
+      See More →
+    </Button>
+  </div>
                   )}
                 </>
               )}

@@ -164,19 +164,19 @@ function Home({ setAppointmentOpen }) {
                 title: 'Pet Grooming',
                 img: 'public/Pictures/service1.png',
                 desc: 'Reveal expert insights.',
-                link: '/health-quizzes'
+                link: '/'
               },
               {
                 title: 'Adoption',
                 img: 'public/Pictures/service2.png',
                 desc: 'Download trusted resources.',
-                link: '/vet-resources'
+                link: '/'
               },
               {
                 title: 'Medical Services',
                 img: 'public/Pictures/service3.png',
                 desc: 'Explore pet care articles.',
-                link: '/blog'
+                link: '/'
               }
             ].map((card, i) => (
               <div
@@ -240,7 +240,7 @@ sx={{
           </CustomButton>
         </section>
 
-        {/* RECOMMENDED */}
+        {/* RECOMMENDED 
         <section style={{ padding: '3rem 2rem', background: '#ffffff' }}>
           <h2 style={{ textAlign: 'center' }}>Recommended for You</h2>
           <div style={{
@@ -272,7 +272,7 @@ sx={{
             ))}
           </div>
           
-        </section>
+        </section>*/}
         
         
       </div>

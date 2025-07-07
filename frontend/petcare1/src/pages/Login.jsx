@@ -132,8 +132,8 @@ const Login = () => {
           <div className="or">Or Continue With</div>
           <div className="social-buttons">
             <CustomButton variant="outlined">G</CustomButton>
-            <CustomButton variant="outlined">f</CustomButton>
-            <CustomButton variant="outlined">🔵</CustomButton>
+            <CustomButton variant="outlined">F</CustomButton>
+            <CustomButton variant="outlined">Y</CustomButton>
           </div>
 
           <p className="bottom-text">

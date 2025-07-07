@@ -7,6 +7,7 @@ import {
 import axios from 'axios';
 import './AppointmentForm.css';
 
+
 const AppointmentForm = ({ onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
     petId: '',
@@ -119,7 +120,7 @@ const AppointmentForm = ({ onClose, onSuccess }) => {
             </Box>
 
             <Box mt={3}>
-              <InputLabel>For when</InputLabel>
+              <InputLabel>Time</InputLabel>
               <TextField
                 type="date"
                 fullWidth
@@ -138,6 +139,9 @@ const AppointmentForm = ({ onClose, onSuccess }) => {
                 <MenuItem value="Grooming">Grooming</MenuItem>
                 <MenuItem value="Vaccination">Vaccination</MenuItem>
                 <MenuItem value="Check-up">Check-up</MenuItem>
+                <MenuItem value="Check-up">Pet Training</MenuItem>
+                
+                
               </Select>
             </Box>
           </Grid>
@@ -150,9 +154,9 @@ const AppointmentForm = ({ onClose, onSuccess }) => {
               onChange={(e) => setFormData({ ...formData, time: e.target.value })}
             >
               <MenuItem value="10:00">10AM - 12PM</MenuItem>
-              <MenuItem value="13:00">1PM - 2PM</MenuItem>
-              <MenuItem value="14:00">2PM - 4PM</MenuItem>
-              <MenuItem value="16:00">4PM - 6PM</MenuItem>
+              <MenuItem value="13:00">1PM - 3PM</MenuItem>
+              <MenuItem value="14:00">4PM - 6PM</MenuItem>
+              <MenuItem value="16:00">6PM - 7PM</MenuItem>
             </Select>
 
             <Box mt={3}>

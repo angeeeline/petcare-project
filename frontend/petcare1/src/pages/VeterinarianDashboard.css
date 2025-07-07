@@ -5,17 +5,7 @@
   background-color: #f9f9f9;
 }
 
-.profile-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 3rem 2rem;
-  background-color: #ffffff; 
-  font-size: larger;
-}
- 
-/* Sidebar Styles */
+/* Sidebar */
 .sidebar {
   width: 250px;
   background-color: #ffffff;
@@ -26,19 +16,41 @@
   padding: 2rem 1rem;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
 }
- 
+
 .logo {
   color: #f57c00;
   margin-bottom: 2rem;
   text-align: center;
 }
- 
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 3rem 2rem;
+  background-color: #ffffff;
+  font-size: larger;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.profile-section:hover {
+  background-color: #f0f4f8;
+}
+
+.vet-name {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
 .sidebar nav ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
- 
+
 .sidebar nav ul li {
   padding: 1rem;
   margin-bottom: 1rem;
@@ -46,46 +58,118 @@
   border-radius: 8px;
   transition: background-color 0.3s ease;
 }
- 
+
 .sidebar nav ul li:hover,
 .sidebar nav ul li.active {
   background-color: #ffe0b2;
   color: #f57c00;
   font-weight: bold;
 }
- 
+
 .logout {
   text-align: center;
   margin-top: auto;
 }
- 
+
 /* Main Content */
 .main-content {
   flex: 1;
   padding: 4rem;
   background-color: #f4f6f8;
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
 }
- 
-.main-content h1 {
+
+.welcome-section {
+  width: 50%;
+  text-align: left;
+}
+
+.welcome-section h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
   color: #333;
 }
- 
-.main-content p {
+
+.welcome-section p {
   font-size: 1.2rem;
   margin-bottom: 2rem;
   color: #666;
 }
 
-.appointments-section {
-  margin-top: 2rem;
+/* Calendar Section */
+.calendar-section {
+  width: 48%;
+  background-color: #f9fbfd;
+  border-radius: 12px;
+  padding: 1rem;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
+.calendar-title {
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.calendar-scroll {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.calendar-slot {
+  margin-bottom: 1.5rem;
+}
+
+.slot-time {
+  color: #7c8b9e;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.no-appointments {
+  padding: 0.8rem 1rem;
+  background-color: #f1f5f9;
+  border-radius: 10px;
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+/* Appointment Card (Shared Style) */
 .appointment-card {
   padding: 1rem;
-  margin-bottom: 1rem;
-  background-color: #f5f5f5;
-  border-radius: 8px;
+  background-color: #e0f7fa;
+  border-left: 6px solid #00acc1;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+  transition: 0.3s ease;
+}
+
+.appointment-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+.appointment-title {
+  font-weight: bold;
+}
+
+.appointment-subtext {
+  color: #555;
+  margin-top: 4px;
+}
+
+.appointment-notes {
+  font-style: italic;
+  margin-top: 4px;
+}
+
+.appointment-status {
+  margin-top: 0.5rem;
+  display: block;
+  color: #4a5568;
+}
+
+.appointment-actions {
+  text-align: right;
 }

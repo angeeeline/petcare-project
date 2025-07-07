@@ -3,9 +3,10 @@ import './Profile.css';
 import { TextField, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+
 import axios from 'axios';
 
-const VeterinarianProfile = () => {
+const VetProfile = () => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [vetId, setVetId] = useState(null);
@@ -170,4 +171,4 @@ const VeterinarianProfile = () => {
   );
 };
 
-export default VeterinarianProfile;
+export default VetProfile;

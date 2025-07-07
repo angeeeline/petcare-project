@@ -163,10 +163,10 @@ const SignUp = () => {
             Create Account
           </CustomButton>
           <div className="or">Or Continue With</div>
-          <div className="social-CustomButtons">
-            <CustomButton variant="outlined">G</CustomButton>
-            <CustomButton variant="outlined">f</CustomButton>
-            <CustomButton variant="outlined">🔵</CustomButton>
+          <div className="social-buttons">
+            <Button variant="outlined">G</Button>
+            <Button variant="outlined">f</Button>
+            <Button variant="outlined">🔵</Button>
           </div>
 
           <p className="bottom-text">
