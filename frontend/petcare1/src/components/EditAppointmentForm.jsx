@@ -44,6 +44,7 @@ const EditAppointmentForm = ({ appointment, onClose, onSuccess }) => {
       await updateAppointment(formData.id, formData);
       alert('Appointment updated successfully!');
       onSuccess?.(); // callback to refresh appointments
+      
     } catch (err) {
       console.error(err);
       alert('Failed to update appointment.');
@@ -121,12 +122,8 @@ const EditAppointmentForm = ({ appointment, onClose, onSuccess }) => {
         </Grid>
 
         <Box className="appointment-footer">
-          <Button variant="outlined" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button variant="contained" color="success" onClick={handleSubmit}>
-            Save Changes
-          </Button>
+          <Button className="custom-button outlined" onClick={onClose}>Cancel</Button>
+          <Button className="custom-button contained" onClick={handleSubmit}>Save Changes</Button>
         </Box>
       </Box>
     </Paper>

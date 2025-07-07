@@ -1,24 +1,24 @@
+/* Fix: min-width typo */
 .tall-select .MuiSelect-select {
-  min-height: 100px !important;
-  min-width: 300x; /* typo: should be fixed */
+  min-height: 56px;
+  min-width: 300px;
   display: flex;
   align-items: center;
 }
 
+/* Ensure full-width inputs and selects */
 .MuiTextField-root,
 .MuiSelect-root,
 .MuiInputBase-root {
   width: 100%;
   box-sizing: border-box;
-  
-
 }
 
+/* Overlay-style wrapper */
 .appointment-wrapper {
-
   min-height: 100vh;
   display: flex;
-  align-items:s center;
+  align-items: center;
   justify-content: center;
   padding-top: 4rem;
   padding-bottom: 4rem;
@@ -27,25 +27,24 @@
   top: 0;
   left: 0;
   width: 100%;
+  
+  background-color: rgba(0, 0, 0, 0.3); /* Optional: dim background */
 }
 
-.tall-select .MuiSelect-select {
-  min-height: 56px; /* Standard Material-UI input height */
-  display: flex;
-  align-items: center;
-}
 
 .appointment-container {
   width: 60%;
-  max-width: 560px;;
-  border-radius: 12px;
-  overflow: hidden;
-  background-color: white;
+  max-width: 560px;
+  border-radius: 1rem !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  background: #ffffff;
+background: linear-gradient(111deg,rgba(255, 255, 255, 1) 0%, rgba(253, 187, 45, 1) 100%);
 }
 
+/* Gradient header */
 .appointment-header {
-  background-color: #7B4A37;
+  background: linear-gradient(90deg, #7B4A37 0%, #ED9353 100%);
   color: white;
   padding: 16px 24px;
   display: flex;
@@ -70,17 +69,49 @@
   gap: 12px;
 }
 
-/* Optional: make each grid item take 50% width */
+/* Grid layout tweaks */
 .appointment-body .MuiGrid-item {
   width: 50%;
   padding-right: 12px;
   box-sizing: border-box;
 }
 
-/* Stack fields nicely on smaller screens */
 @media (max-width: 768px) {
   .appointment-body .MuiGrid-item {
     width: 100%;
     padding-right: 0;
   }
+}
+
+/* Button base style */
+.custom-button {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+/* Contained button */
+.custom-button.contained {
+  background-color: #FF6F00;
+  color: #fff;
+}
+
+.custom-button.contained:hover {
+  background-color: #e65c00;
+}
+
+/* Outlined button */
+.custom-button.outlined {
+  background-color: transparent;
+  border: 2px solid #FF6F00;
+  color: #FF6F00;
+}
+
+.custom-button.outlined:hover {
+  background-color: #fff3e0;
+  border-color: #e65c00;
+  color: #e65c00;
 }

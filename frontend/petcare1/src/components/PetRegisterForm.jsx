@@ -39,34 +39,48 @@ const PetRegisterForm = ({ onClose, onSuccess }) => {
   }, []);
 
   const handleSubmit = async () => {
-    try {
-      if (!formData.ownerId) {
-        alert('Owner ID missing. Please log in again.');
-        return;
-      }
-
-      await createPet({
-        petname: formData.petname,
-        type: formData.type,
-        weight: parseFloat(formData.weight),
-        breed: formData.breed,
-        notes: formData.notes,
-        petOwner: { id: formData.ownerId },
-      });
-
-      alert('Pet registered successfully!');
-      onSuccess?.();
-    } catch (err) {
-      console.error(err);
-      alert('Failed to register pet.');
+  try {
+    if (!formData.ownerId) {
+      alert('Owner ID missing. Please log in again.');
+      return;
     }
-  };
+
+    const { petname, type, weight, breed } = formData;
+
+    if (!petname || !type || !weight || !breed) {
+      alert('All fields are required.');
+      return;
+    }
+
+    const weightNum = parseFloat(weight);
+    if (isNaN(weightNum) || weightNum < 0) {
+      alert('Please enter a valid non-negative weight.');
+      return;
+    }
+
+    await createPet({
+      petname,
+      type,
+      weight: weightNum,
+      breed,
+      notes: formData.notes,
+      petOwner: { id: formData.ownerId },
+    });
+
+    alert('Pet registered successfully!');
+    onSuccess?.();
+    window.location.reload();
+  } catch (err) {
+    console.error(err);
+    alert('Failed to register pet.');
+  }
+};
 
   return (
     <Paper elevation={4} className="appointment-container">
       <Box className="appointment-header">
         <Typography variant="h6">
-          {isAuthenticated ? 'Register Pet' : 'Access Denied'}
+          {isAuthenticated ? 'Add Pet' : 'Access Denied'}
         </Typography>
         <Button sx={{ color: 'white' }} onClick={onClose}>
           Close ✕
@@ -117,10 +131,23 @@ const PetRegisterForm = ({ onClose, onSuccess }) => {
                   fullWidth
                   type="number"
                   value={formData.weight}
-                  onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
-                  placeholder="10"
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === '' || (/^\d*\.?\d*$/.test(value) && parseFloat(value) >= 0)) {
+                      setFormData({ ...formData, weight: value });
+                    }
+                  }}
+                  placeholder="eg. 1.5"
+                  slotProps={{
+                    input: {
+                      min: 0,
+                      step: '0.01',
+                    },
+                  }}
                 />
               </Box>
+
+
             </Grid>
 
             <Grid item xs={12} md={6}>
@@ -137,8 +164,8 @@ const PetRegisterForm = ({ onClose, onSuccess }) => {
           </Grid>
 
           <Box className="appointment-footer">
-            <Button variant="outlined" color="inherit" onClick={onClose}>Cancel</Button>
-            <Button variant="contained" color="success" onClick={handleSubmit}>Confirm</Button>
+            <Button className="custom-button outlined" onClick={onClose}>Cancel</Button>
+            <Button className="custom-button contained" onClick={handleSubmit}>Confirm</Button>
           </Box>
         </Box>
       )}

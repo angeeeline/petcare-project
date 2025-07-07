@@ -164,9 +164,9 @@ const SignUp = () => {
           </CustomButton>
           <div className="or">Or Continue With</div>
           <div className="social-buttons">
-            <Button variant="outlined">G</Button>
-            <Button variant="outlined">f</Button>
-            <Button variant="outlined">🔵</Button>
+            <CustomButton variant="outlined">G</CustomButton>
+            <CustomButton variant="outlined">f</CustomButton>
+            <CustomButton variant="outlined">🔵</CustomButton>
           </div>
 
           <p className="bottom-text">
