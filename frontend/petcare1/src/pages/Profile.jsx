@@ -228,17 +228,17 @@ const Profile = () => {
                     </div>
                   ))}
                   {history.length >= 6 && (
-  <div className="see-more-wrapper">
-    <Button
-      variant="outlined"
-      color="primary"
-      size="small"
-      className="see-more-btn"
-      onClick={() => window.location.href = '/appointments-list'}
-    >
-      See More →
-    </Button>
-  </div>
+                    <div className="see-more-wrapper">
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        className="see-more-btn"
+                        onClick={() => window.location.href = '/appointments-list'}
+                      >
+                        See More →
+                      </Button>
+                    </div>
                   )}
                 </>
               )}

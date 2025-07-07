@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.backend.model.Veterinarian;
+import com.example.backend.repository.PetOwnerRepository;
 import com.example.backend.repository.VeterinarianRepository;
 
 @Service
@@ -14,6 +15,8 @@ public class VeterinarianService {
 
     @Autowired
     private VeterinarianRepository veterinarianRepository;
+    @Autowired
+    private PetOwnerRepository petOwnerRepository;
 
     public List<Veterinarian> getAllVeterinarians() {
         return veterinarianRepository.findAll();
@@ -24,8 +27,11 @@ public class VeterinarianService {
     }
 
     public Veterinarian createVeterinarian(Veterinarian vet) {
-        return veterinarianRepository.save(vet);
+    if (veterinarianRepository.existsByEmail(vet.getEmail()) || petOwnerRepository.existsByEmail(vet.getEmail())) {
+        throw new RuntimeException("Email already in use by another account.");
     }
+    return veterinarianRepository.save(vet);
+}
 
     public boolean emailExists(String email) {
         return veterinarianRepository.existsByEmail(email);
@@ -40,20 +46,7 @@ public class VeterinarianService {
         return vet.isPresent() && vet.get().getPassword().equals(password);
     }
 
-    public Veterinarian updateVeterinarian(Long id, Veterinarian updatedVet) {
-    Veterinarian existingVet = veterinarianRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Veterinarian not found"));
-
-    existingVet.setFirstname(updatedVet.getFirstname());
-    existingVet.setLastname(updatedVet.getLastname());
-    existingVet.setPhoneNumber(updatedVet.getPhoneNumber());
-    existingVet.setSpecialization(updatedVet.getSpecialization());
     
-    
-
-    return veterinarianRepository.save(existingVet);
-}
-
 
    
 

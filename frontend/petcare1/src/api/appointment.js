@@ -37,4 +37,11 @@ export const updateAppointment = async (id, data) => {
   return res.data;
 };
 
+// PATCH: Update status of an appointment
+export const updateAppointmentStatus = async (id, status) => {
+  const res = await axios.patch(`${API_BASE}/${id}/status`, { status });
+  return res.data;
+};
+
+
 

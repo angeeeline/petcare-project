@@ -8,12 +8,15 @@ import org.springframework.stereotype.Service;
 
 import com.example.backend.model.PetOwner;
 import com.example.backend.repository.PetOwnerRepository;
+import com.example.backend.repository.VeterinarianRepository;
 
 @Service
 public class PetOwnerService {
 
     @Autowired
     private PetOwnerRepository petOwnerRepository;
+    @Autowired
+    private VeterinarianRepository veterinarianRepository;
 
     public List<PetOwner> getAllPetOwners() {
         return petOwnerRepository.findAll();
@@ -28,16 +31,18 @@ public class PetOwnerService {
     }
 
     public PetOwner createPetOwner(PetOwner petOwner) {
-        if (petOwnerRepository.existsByEmail(petOwner.getEmail())) {
-            throw new RuntimeException("Email already exists: " + petOwner.getEmail());
-        }
-
-        if (petOwnerRepository.existsByPhoneNumber(petOwner.getPhoneNumber())) {
-            throw new RuntimeException("Phone number already exists: " + petOwner.getPhoneNumber());
-        }
-
-        return petOwnerRepository.save(petOwner);
+    if (petOwnerRepository.existsByEmail(petOwner.getEmail()) ||
+        veterinarianRepository.existsByEmail(petOwner.getEmail())) {
+        throw new RuntimeException("Email already exists: " + petOwner.getEmail());
     }
+
+    if (petOwnerRepository.existsByPhoneNumber(petOwner.getPhoneNumber())) {
+        throw new RuntimeException("Phone number already exists: " + petOwner.getPhoneNumber());
+    }
+
+    return petOwnerRepository.save(petOwner);
+}
+
 
     public PetOwner updatePetOwner(Long id, PetOwner petOwnerDetails) {
         PetOwner petOwner = petOwnerRepository.findById(id)
