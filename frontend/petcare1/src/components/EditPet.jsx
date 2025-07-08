@@ -26,11 +26,12 @@ const EditPet = ({ pet, onClose, onSuccess }) => {
   useEffect(() => {
     if (pet) {
       setFormData({
-        id: pet.id,
+        id: pet.id || pet.petId,
         petname: pet.petname || '',
         type: pet.type || '',
         weight: pet.weight || '',
         breed: pet.breed || '',
+         petOwnerId: pet.petOwner?.id || pet.petOwnerId || '',
       });
     }
   }, [pet]);

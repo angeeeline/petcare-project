@@ -1,23 +1,43 @@
-.adoption-container {
-  padding: 40px;
-  background-color: #f9f9f9;
+/* Adoption.css */
+
+.adoption-wrapper {
+  background-color: #fffef9;
   min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-.adoption-title {
+.adoption-hero {
   text-align: center;
+  padding: 60px 20px 30px;
+  background: linear-gradient(to right, #fff9c4, #ffecb3);
+}
+
+.adoption-hero h1 {
   font-size: 2.5rem;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   color: #333;
 }
 
-.adoption-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 30px;
+.adoption-hero p {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto 20px;
 }
 
-.adoption-card {
-  background: #fff;
-  border: 1px solid #ddd;
+.filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.pet-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pet-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }

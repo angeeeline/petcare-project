@@ -134,8 +134,8 @@ const Header = () => {
                       <Box>
                         <Typography variant="subtitle2" sx={{ mb: 1 }} color="textSecondary">STORE SHORTCUTS</Typography>
                         <List dense>
-                          <ListItem button onClick={() => goTo('/cart')}><ListItemText primary="View Cart" /></ListItem>
-                          <ListItem button onClick={() => goTo('/wishlist')}><ListItemText primary="Wishlist" /></ListItem>
+                          <ListItem button onClick={() => goTo('/')}><ListItemText primary="View Cart" /></ListItem>
+                          <ListItem button onClick={() => goTo('/')}><ListItemText primary="Wishlist" /></ListItem>
                         </List>
                       </Box>
                     </Paper>

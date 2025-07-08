@@ -48,7 +48,7 @@
   padding: 20px;
   margin-top: 20px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  height: 550px;         /* Fixed height */
+  height: 300px;         /* Fixed height */
   width: 100%;           /* Full width of parent — or use e.g. 400px if you want fixed width */
   max-width: 500px;      /* Optional: limit the max width */
         /* Enable vertical scroll if needed */

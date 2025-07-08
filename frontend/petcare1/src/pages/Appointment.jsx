@@ -12,8 +12,9 @@ import {
 } from '@mui/material';
 import './Appointment.css';
 import { useNavigate } from 'react-router-dom';
-import { createAppointment } from "../api/appointment"; 
+import { createAppointment } from "../api/appointment";
 import Header from '../components/Header';
+import Alerts from '../components/Alerts'; // ✅ Import your reusable alert
 
 const Appointment = () => {
   const navigate = useNavigate();
@@ -27,6 +28,20 @@ const Appointment = () => {
     notes: '',
   });
 
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertSeverity, setAlertSeverity] = useState('success');
+
+  const showAlert = (message, severity = 'success') => {
+    setAlertMessage(message);
+    setAlertSeverity(severity);
+    setAlertOpen(true);
+  };
+
+  const handleCloseAlert = () => {
+    setAlertOpen(false);
+  };
+
   const handleClose = () => {
     navigate('/');
   };
@@ -35,20 +50,24 @@ const Appointment = () => {
     try {
       await createAppointment({
         ...formData,
-        date: formData.date, 
+        date: formData.date,
         time: formData.time,
       });
-      alert('Appointment created successfully!');
-      navigate('/profile');
+      showAlert('Appointment created successfully!', 'success');
+
+      // Redirect after showing alert
+      setTimeout(() => {
+        navigate('/profile');
+      }, 2000);
     } catch (err) {
       console.error(err);
-      alert('Failed to submit appointment.');
+      showAlert('Failed to submit appointment.', 'error');
     }
   };
 
   return (
     <>
-      <Header/>
+      <Header />
 
       <Box className="appointment-wrapper">
         <Paper elevation={4} className="appointment-container">
@@ -64,12 +83,11 @@ const Appointment = () => {
               <Grid item xs={12} md={6}>
                 <InputLabel className="input-label">Pet Name</InputLabel>
                 <TextField
-                  className="textfield-long"
-                   fullWidth
-                   value={formData.petName}
-                   onChange={(e) => setFormData({ ...formData, petName: e.target.value })}
-                   placeholder="e.g. Max"
-                   />
+                  fullWidth
+                  value={formData.petName}
+                  onChange={(e) => setFormData({ ...formData, petName: e.target.value })}
+                  placeholder="e.g. Max"
+                />
 
                 <Box mt={3}>
                   <InputLabel className="input-label">For when</InputLabel>
@@ -129,6 +147,14 @@ const Appointment = () => {
           </Box>
         </Paper>
       </Box>
+
+      {/* ✅ Custom styled alert box */}
+      <Alerts
+        open={alertOpen}
+        severity={alertSeverity}
+        message={alertMessage}
+        onClose={handleCloseAlert}
+      />
     </>
   );
 };

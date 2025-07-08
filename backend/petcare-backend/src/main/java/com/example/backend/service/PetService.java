@@ -41,9 +41,23 @@ public class PetService {
     }
 
     public Pet update(Long petId, Pet newData) {
-        newData.setPetId(petId);
-        return repository.save(newData);
-    }
+    return repository.findById(petId)
+        .map(existingPet -> {
+            existingPet.setPetname(newData.getPetname());
+            existingPet.setType(newData.getType());
+            existingPet.setBreed(newData.getBreed());
+            
+            // If petOwner is included, validate it
+            if (newData.getPetOwner() != null && newData.getPetOwner().getId() != null) {
+                PetOwner owner = petOwnerRepository.findById(newData.getPetOwner().getId())
+                    .orElseThrow(() -> new RuntimeException("Owner not found"));
+                existingPet.setPetOwner(owner);
+            }
+
+            return repository.save(existingPet);
+        })
+        .orElseThrow(() -> new RuntimeException("Pet not found with ID: " + petId));
+}
 
     public void delete(Long petId) {
         repository.deleteById(petId);

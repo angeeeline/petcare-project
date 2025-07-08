@@ -24,6 +24,8 @@ import AppointmentList from './pages/AppointmentList';
 import Veterinarian from './pages/Veterinarians';
 import VetDashboard from './pages/VeterinarianDashboard';
 import TreatmentList from './pages/TreatmentList';
+import AboutUs from './pages/AboutUs';
+import Adoption from './pages/Adoption';
 
 import VetProfile from './pages/VetProfile';
 
@@ -309,7 +311,9 @@ function App() {
         <Route path="/vet-dashboard" element={<VetDashboard />} />
         <Route path="/treatments" element={<TreatmentList />} />
         <Route path="/vet-profile" element={<VetProfile />} />
-        
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/adoption" element={<Adoption />} />
+
        
       
 

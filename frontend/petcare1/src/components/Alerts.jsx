@@ -1,24 +1,26 @@
 import React from 'react';
-import { Snackbar, Alert } from '@mui/material';
+import { Alert, Button, Typography, Box, Paper } from '@mui/material';
+import './AppointmentForm.css'; // Reuse the same styles
 
 const Alerts = ({ open, severity, message, onClose }) => {
+  if (!open) return null;
+
   return (
-    <Snackbar
-      open={open}
-      autoHideDuration={4000}
-      onClose={onClose}
-      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-    >
-      <Alert
-        onClose={onClose}
-        severity={severity}
-        variant="filled"
-        sx={{ width: '100%' }}
-      >
-        {message}
-      </Alert>
-    </Snackbar>
+    <Box className="appointment-wrapper">
+      <Paper elevation={4} className="appointment-container">
+        <Box className="appointment-header">
+          <Typography variant="h6">{severity === 'success' ? 'Success' : 'Notification'}</Typography>
+          <Button sx={{ color: 'white' }} onClick={onClose}>Close ✕</Button>
+        </Box>
+
+        <Box className="appointment-body">
+          <Alert severity={severity} variant="filled" sx={{ width: '100%', fontSize: '1rem' }}>
+            {message}
+          </Alert>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 
-export default CustomAlert;
+export default Alerts;

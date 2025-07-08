@@ -1,0 +1,26 @@
+/* Scope styles only inside the modal */
+.treatment-modal-content {
+  padding: 2rem;
+  border-radius: 12px;
+  background: white;
+  max-width: 500px;
+  margin: auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Only affects Typography inside the modal */
+.treatment-modal-content .MuiTypography-root {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+/* Button styling scoped to modal only */
+.treatment-modal-content .MuiButton-root {
+  background-color: #004990;
+  color: #fff;
+  text-transform: none;
+}
+
+.treatment-modal-content .MuiButton-root:hover {
+  background-color: #003060;
+}
